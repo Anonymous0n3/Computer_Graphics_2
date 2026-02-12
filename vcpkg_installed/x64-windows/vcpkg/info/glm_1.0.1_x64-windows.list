@@ -67,7 +67,7 @@ x64-windows/include/glm/detail/type_vec3.hpp
 x64-windows/include/glm/detail/type_vec3.inl
 x64-windows/include/glm/detail/type_vec4.hpp
 x64-windows/include/glm/detail/type_vec4.inl
-x64-windows/include/glm/detail/type_vec_simd.inl
+x64-windows/include/glm/detail/type_vec4_simd.inl
 x64-windows/include/glm/exponential.hpp
 x64-windows/include/glm/ext.hpp
 x64-windows/include/glm/ext/
@@ -320,7 +320,7 @@ x64-windows/include/glm/gtx/fast_square_root.hpp
 x64-windows/include/glm/gtx/fast_square_root.inl
 x64-windows/include/glm/gtx/fast_trigonometry.hpp
 x64-windows/include/glm/gtx/fast_trigonometry.inl
-x64-windows/include/glm/gtx/float_normalize.inl
+x64-windows/include/glm/gtx/float_notmalize.inl
 x64-windows/include/glm/gtx/functions.hpp
 x64-windows/include/glm/gtx/functions.inl
 x64-windows/include/glm/gtx/gradient_paint.hpp
@@ -335,8 +335,6 @@ x64-windows/include/glm/gtx/intersect.hpp
 x64-windows/include/glm/gtx/intersect.inl
 x64-windows/include/glm/gtx/io.hpp
 x64-windows/include/glm/gtx/io.inl
-x64-windows/include/glm/gtx/iteration.hpp
-x64-windows/include/glm/gtx/iteration.inl
 x64-windows/include/glm/gtx/log_base.hpp
 x64-windows/include/glm/gtx/log_base.inl
 x64-windows/include/glm/gtx/matrix_cross_product.hpp
@@ -394,8 +392,6 @@ x64-windows/include/glm/gtx/std_based_type.hpp
 x64-windows/include/glm/gtx/std_based_type.inl
 x64-windows/include/glm/gtx/string_cast.hpp
 x64-windows/include/glm/gtx/string_cast.inl
-x64-windows/include/glm/gtx/structured_bindings.hpp
-x64-windows/include/glm/gtx/structured_bindings.inl
 x64-windows/include/glm/gtx/texture.hpp
 x64-windows/include/glm/gtx/texture.inl
 x64-windows/include/glm/gtx/transform.hpp

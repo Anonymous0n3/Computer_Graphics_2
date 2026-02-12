@@ -5,8 +5,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <opencv4/opencv2/opencv.hpp>
-
+//#include <opencv4/opencv2/opencv.hpp>
+#include <opencv2/opencv.hpp>
 
 int main()
 {

@@ -3,13 +3,13 @@
   "spdxVersion": "SPDX-2.2",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "documentNamespace": "https://spdx.org/spdxdocs/glm-x64-windows-1.0.3-adea45e7-865b-46ba-acf3-f7e41954a6d9",
-  "name": "glm:x64-windows@1.0.3 d7ea030e6c40bcc18c0c05d1271de4063748f03b76f2f2f9a697cb60e5701a59",
+  "documentNamespace": "https://spdx.org/spdxdocs/glm-x64-windows-1.0.1#3-2644018e-81e1-463f-9fbd-2f25b6b2c2eb",
+  "name": "glm:x64-windows@1.0.1#3 4123ba5a7371d94bb5cbea5bb3e2f972d663b2d6ae26b099496eacf8dd42d78f",
   "creationInfo": {
     "creators": [
       "Tool: vcpkg-2025-12-16-44bb3ce006467fc13ba37ca099f64077b8bbf84d"
     ],
-    "created": "2026-02-12T16:38:39Z"
+    "created": "2026-02-12T16:43:33Z"
   },
   "relationships": [
     {
@@ -33,7 +33,12 @@
       "relatedSpdxElement": "SPDXRef-port-file-2"
     },
     {
-      "spdxElementId": "SPDXRef-port-file-2",
+      "spdxElementId": "SPDXRef-port",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-port-file-3"
+    },
+    {
+      "spdxElementId": "SPDXRef-port-file-3",
       "relationshipType": "DEPENDENCY_MANIFEST_OF",
       "relatedSpdxElement": "SPDXRef-port"
     },
@@ -2221,34 +2226,14 @@
       "spdxElementId": "SPDXRef-binary",
       "relationshipType": "CONTAINS",
       "relatedSpdxElement": "SPDXRef-binary-file-436"
-    },
-    {
-      "spdxElementId": "SPDXRef-binary",
-      "relationshipType": "CONTAINS",
-      "relatedSpdxElement": "SPDXRef-binary-file-437"
-    },
-    {
-      "spdxElementId": "SPDXRef-binary",
-      "relationshipType": "CONTAINS",
-      "relatedSpdxElement": "SPDXRef-binary-file-438"
-    },
-    {
-      "spdxElementId": "SPDXRef-binary",
-      "relationshipType": "CONTAINS",
-      "relatedSpdxElement": "SPDXRef-binary-file-439"
-    },
-    {
-      "spdxElementId": "SPDXRef-binary",
-      "relationshipType": "CONTAINS",
-      "relatedSpdxElement": "SPDXRef-binary-file-440"
     }
   ],
   "packages": [
     {
       "name": "glm",
       "SPDXID": "SPDXRef-port",
-      "versionInfo": "1.0.3",
-      "downloadLocation": "git+https://github.com/microsoft/vcpkg@fbe815929bda5a29c7d1890ddae28f31e8fe4f5d",
+      "versionInfo": "1.0.1#3",
+      "downloadLocation": "git+https://github.com/microsoft/vcpkg@f8b09027afe97c717e95bd81d1d4f37c057d1c78",
       "homepage": "https://glm.g-truc.net",
       "licenseConcluded": "MIT",
       "licenseDeclared": "NOASSERTION",
@@ -2259,7 +2244,7 @@
     {
       "name": "glm:x64-windows",
       "SPDXID": "SPDXRef-binary",
-      "versionInfo": "d7ea030e6c40bcc18c0c05d1271de4063748f03b76f2f2f9a697cb60e5701a59",
+      "versionInfo": "4123ba5a7371d94bb5cbea5bb3e2f972d663b2d6ae26b099496eacf8dd42d78f",
       "downloadLocation": "NONE",
       "licenseConcluded": "MIT",
       "licenseDeclared": "NOASSERTION",
@@ -2269,26 +2254,38 @@
     {
       "SPDXID": "SPDXRef-resource-0",
       "name": "g-truc/glm",
-      "downloadLocation": "git+https://github.com/g-truc/glm@1.0.3",
+      "downloadLocation": "git+https://github.com/g-truc/glm@1.0.1",
       "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
       "checksums": [
         {
           "algorithm": "SHA512",
-          "checksumValue": "0a490f0c79cd4a8ba54f37358f8917cef961dab9e61417c84ae0959c61bc860e5b83f4fb7f27169fb3d08eef1d84131bddde23d60876922310205c901b1273aa"
+          "checksumValue": "c6c6fa1ea7a7e97820e36ee042a78be248ae828c99c1b1111080d9bf334a5160c9993a70312351c92a867cd49907c95f9f357c8dfe2bc29946da6e83e27ba20c"
         }
       ]
     }
   ],
   "files": [
     {
-      "fileName": "./portfile.cmake",
+      "fileName": "./fix-clang.patch",
       "SPDXID": "SPDXRef-port-file-0",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "48a479fca2fb67ec7dff2a555e42930803a677a18fb132d102cfd33752ee4d84"
+          "checksumValue": "11175e50d673af29546980307e6a1dfab07cb73259a0672a6c9b2b42508c287b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./portfile.cmake",
+      "SPDXID": "SPDXRef-port-file-1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4c42ae3b630892e6556e00a08208f5ffbc9c3fdea36dee666788043692b641c8"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2296,7 +2293,7 @@
     },
     {
       "fileName": "./usage",
-      "SPDXID": "SPDXRef-port-file-1",
+      "SPDXID": "SPDXRef-port-file-2",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -2308,11 +2305,11 @@
     },
     {
       "fileName": "./vcpkg.json",
-      "SPDXID": "SPDXRef-port-file-2",
+      "SPDXID": "SPDXRef-port-file-3",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "d868ca182357c201daf928b7c6c112b3410204b8729576b3c96f125885285676"
+          "checksumValue": "e667d77bbd9bc58bcb5eed3017574428bbe6debb8f6c46354b9482465010fe62"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2336,7 +2333,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "585e7282e62ad8c593470160313dc0211b6a5e8c0b79df5214dd85eee659c700"
+          "checksumValue": "89b7852bcda7beccfe56866d58ad8ee6fef75794594e709e9b0f52e6a472e998"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2372,7 +2369,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "079647a326b1daf5924ef5ee4c040cad2b1ca74e789c0708cf17b92258fa6c17"
+          "checksumValue": "266ae5a52bf8dbc0e687134b7c2222a7e5a5fd18350caf4db4df4a8561b29bb5"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2396,7 +2393,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "991f11e01f8df3d76a53dc7f61de1363d75dedaf0976b36afb8a6ba25f610aba"
+          "checksumValue": "622f4a25a9d4cbc9d15cefaa505617db52f404dc09938eb0a6468c3354a02f1c"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2408,7 +2405,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "010ce001b7e01e0f5aecab760e5f9e1f7367ef3f838511b4e8543621a04de1e5"
+          "checksumValue": "2becb18e20aec82c938ad3ce7418be0feae5f6657534a6ab4306e3a279ae6152"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2420,7 +2417,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "57b3e64b914aaddf712c9305b3c960f536371878da9beaaa52411685461a13b1"
+          "checksumValue": "1d82bd0036b3947762e9daad33b2d2b8d0de9309322689de3d1ec8bab13cd2d2"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2444,7 +2441,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "82802159c46a19d4d7716d2115f64d880be7e1f68765b9776ab207d780807aed"
+          "checksumValue": "459c9dfb53d667cd2b56ba6f75cd721fd319cd31a93eb0024255677b8a9b91cc"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2456,7 +2453,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "84db891968f33fabc689c3d0d142b9110294451f1986b7d155ef9c6bbb4c3973"
+          "checksumValue": "c91ddff7ce512d307db40c0abe51cc60ad38b056fc153297b809bd0a1c7ef5fe"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2468,7 +2465,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "4151986e27acd9c6442df34b03e60139b701999a7b3da5a6868412a82e68f716"
+          "checksumValue": "ff54c8440886f3bf6ab1cb4dea542468d5c614f60bf0f26802f2bd25ce3aec73"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2492,7 +2489,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "1207bfe752e46c66f2829ce9f8c705232092700a882dd6b3b9425c8ce3fe51b7"
+          "checksumValue": "1cdeface728d26a4385cc16c269b3829160bcb820b69ec277b1c3701c39bd99a"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2504,7 +2501,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "e166cbebd9358588618d13a06eb9e446b700057b579f8ad29004acdc7ff7306f"
+          "checksumValue": "4fa9fe26917655b0883376ebbdf5ee40317665dd48bb5c261b644ee6b2ed32dc"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2588,7 +2585,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "7fc9be4fbac109542f9af1213005346086a1b2c14ebe2a4ad3f138f3834db941"
+          "checksumValue": "a094f828e1f0f17b04662c7742f2de9f1568654ac1c627a5a34f13f4a428ae73"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2600,7 +2597,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "7aeac5f638a377ee84399b158b2b2ba9331827ddb81cd506c4b640b389da88dc"
+          "checksumValue": "4b98355b9cf30c48953783aec2f8ebf342ff3a0bc55902fe40266d62cb10ddb9"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2612,7 +2609,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "78c7278cc214b6ce75c5648f5afc65dd36488bf65abfd6aac8171b0439e98a10"
+          "checksumValue": "7736436b5c6de9a9ce7192eefc5087d5d308390036f0df46a269ca37dc3946db"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2696,7 +2693,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "4e4b2a95545dc65e7ef9b466e84ddf5bf618a9f3b48cf3b38a1141a3748aa9ca"
+          "checksumValue": "e55f335fe4ba9b34fed3566b207757f9262f3e260d5d835bd0607d78ef5a1c67"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2720,7 +2717,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "351e90e3f790a8c7c41dd4e57d285f3038ce973c9c04afe899329099bf4e2c33"
+          "checksumValue": "67fee733a7c5fef488567e487a33b5338c8ab307124a6b23bd16d5dad0ec6393"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2744,7 +2741,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "636ef22f8df2f6b1d23ecd8a58e186df0bb1577b48ab29ef13df6a81f37b796c"
+          "checksumValue": "9eb7d88eda419a9e5a3d85fa9b6093e484bb5952ead99826de846bfe39a7f2cf"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2768,7 +2765,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "3345b585609f6cc7cfed8dc944f564e8c61b6ebe4534462dd4aba9d4ca88249b"
+          "checksumValue": "9263276b46545ea2bde44a1ef144d555a085c0c6fb1d5e25bfd946a5d40f9259"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2792,7 +2789,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "d647a8cd33e81ade48338a816aa8ea80bd93b59da2d8a8830da6aacaa8e2e064"
+          "checksumValue": "8e6487313db164e03c2b80302a0e87fc172f70057312f1d1db0ea2dd7df8fb8e"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2816,7 +2813,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "eacdfaf59fcc80b2029c1650bc11dac3556aaeb83d0e3dea12d99c20ef183895"
+          "checksumValue": "8a6546f3b442e62ee2955cf26ce49fc71d73d68a2736600ff1f4191a7b7eb2f6"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2840,7 +2837,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "422a24c4ec46e03d5ec28384e03d3a5425d8957878696f5b6540906200ea9de6"
+          "checksumValue": "3c3d7cd6c2099d8738522575ec2c56867488f357a2a2189fac2f2832998c02bc"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2864,7 +2861,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "26bb1b67e5dade3a99af92cd911357f1f3dd4c31391020428fd79a3997ef9c25"
+          "checksumValue": "1b96dc7890f9b78622b8c5f04e9cac29e1655c2d2cf2f002b3cf80f7190db78b"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2912,7 +2909,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "6de50aa77ac5198e56e16eff8c4e9e8e4511ff844503e4f0c53176b51ff718f8"
+          "checksumValue": "3c0d66030d6c0a51cf31c10a6f73361e7faf365788e697c6f1913483096e05e3"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2948,7 +2945,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "d615eb733aca5ca0be9ffb04540a848ac62bd8facc044ce73aff51aebe882a4f"
+          "checksumValue": "accb7e4d39916aa577725dccf1b40060f26e26c4f84d8dc6642c760f6c74c206"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2972,7 +2969,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "d9be575fe520dcbb068188144e0bba0a4197aefe142b42f8fc8496c328875649"
+          "checksumValue": "1ce96f9a3e8edf7eb2b9dcc1d1cdac5822a60c4c59e3d77800862e4b0bb4f453"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2984,7 +2981,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "494d02c0f65f21296ce6567597eaed7862dea84d2ca92d8527f762b4570a61b4"
+          "checksumValue": "b4e596209902f3ba68d2a44bcc62f5e79c36daa6cddd26ebd478559036ff4cd6"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -2996,7 +2993,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "4a8d4855f4c98039696eda09d6d9b066f368e2c67c0d12d4bf58e0c9cd3310cf"
+          "checksumValue": "afcd3c1d8962214dea86fa94582f625ff10840027a6b8376988d86e5b02f662f"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -3008,19 +3005,19 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "edffb35e87f926cf1948db02b3edde418464e9a062cbc235ee3016d84aebb8b0"
+          "checksumValue": "6b2a1bf165972052f838997462ff2032b48bbe372adf57c4030ed0feb1c624ad"
         }
       ],
       "licenseConcluded": "NOASSERTION",
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/glm/detail/type_vec_simd.inl",
+      "fileName": "./include/glm/detail/type_vec4_simd.inl",
       "SPDXID": "SPDXRef-binary-file-58",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "e925b86e9075162cff4985b9335406c85ea1a8b88dd6209af1987bccce0c6b78"
+          "checksumValue": "cd8dd4b0b77269f1bc7218fc2da0c35d28b51ca97f5560b9c0c47e240eaf7741"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -3068,7 +3065,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "c7fab561c416689a80e0654c327e5e302403b70fc08f9c780e2bd9697f462333"
+          "checksumValue": "215f9e0cc11e7de04545bac1d5f54108ea61f691b2b95a83182adfd788e89378"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -3092,7 +3089,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "97e93812d3b8501e5b87a5bb0967dd3825ca1d1b34b618adeffd1f951a27c46f"
+          "checksumValue": "da5f0b653ca062e22c8e456b6ef5e430309ac8681d2dba4cb1606d4e4df0aa2d"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -3116,7 +3113,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "8f0769607e5aa9aa6620f2856ecc6088f4716d86beafa52f2bb36442aa3c3d2a"
+          "checksumValue": "ab50948fb483e15105e7a7a37da89b77378a06c2f98a767965d6c58916d27965"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -3128,7 +3125,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "1ec230a70c553126ee4e1cd10725f1e40817be438ce767f8be31d062ccdea404"
+          "checksumValue": "1d77ce1da280ea4da873edbe020484fe42da46dee6ec5a323c95b8aabe6dabf2"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -4196,7 +4193,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "8f58c7e17eda28c9050420cbc280ff69c421cdda8fdd82009b79cd3fd89ac0fe"
+          "checksumValue": "62181d397041de647760adad02e3491dc30cf1009907f0c426673cd25e642cc8"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -4232,7 +4229,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "ec8119467fd7a042ae2b79cd43c37216969f4bcdcccf02c0bf9e1d4d91b5c46f"
+          "checksumValue": "e45a68cd6f281714bfa38b7aa0f101d48669c358a10693b13913fa4ef94686aa"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -4244,7 +4241,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "e4451872a668a962e160b9f0ab3b6e30c0854cc1980691b14e63460e68ef31d9"
+          "checksumValue": "70b0caeb932deb9bf5c59aac17fe6c42f3fc5c5afddb437679404c678a40069a"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -4328,7 +4325,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "8cdc02986ad13d794c24ee067be824352d8cef8426e63f206b9976cf43ed427a"
+          "checksumValue": "72f515c4eaafc14b5fb0def98d0267987070a39f4f5c0926eb1a9806a3b4fe64"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -4340,7 +4337,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "3698e999ccdffb9ffd9636c72bf2019155abca698bf391645354d3a77f49ac97"
+          "checksumValue": "b671ebb7e9d57acaf143e44de2a16836ab1f3dfdf0a99b4b2694cac18c70228e"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5012,7 +5009,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "b6b4bdd8b8bd6da87cddf1730623a721c243fcc8b17fa5a71fd64bb9a846d537"
+          "checksumValue": "deab66a22d8187a086f473208f51841ed156166407a8aae5b5c30135430b73af"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5156,7 +5153,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "d683987a19e6993c2a41bfb8a48b35d6ac2e86d3efa4dcd2d6431cfef47d2efb"
+          "checksumValue": "c84f06bf2a4d98b6ab3ea5b8bd6e8ac2a8faa3893623625d96391bcb57310d11"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5192,7 +5189,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "0792efef0fa8bf77616ac930135410e4f3fe03af300b4bfbdd13d37a2ed09573"
+          "checksumValue": "0aa36fb9ada2441cffe602e5ad0bc756c41cb72f17191c786b99969c836ca928"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5228,7 +5225,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "782bb73ba7f5517041d8e40f76b090ec5198b937d6971095815b3b7a6597eaff"
+          "checksumValue": "b50b03cee24be8d7c0f57eed488a804a0e95ae560aa3392260ebf9389100b016"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5432,7 +5429,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "cfaea7e441326cdf1c85524697da7d97c648cee45a1e1fd01a75c4b072d445c9"
+          "checksumValue": "edf232b83e1285bccc1a5044786d88efaa862d8f2d709fba75344516e5ecf06d"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5456,7 +5453,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "7ee22112147af800f479b9c2f177fc5df76f24db8f26450c2415762b613622ed"
+          "checksumValue": "4c062b25db0eee7564adbcf6439bfb59518f3f9a66c4ece697c3c2bbace3ad59"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5516,7 +5513,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "3bb280514bf1c882165988844e86413ba5980c07e547937ae3edf2b4bdd0c4bd"
+          "checksumValue": "4a15912d774b0c40f7ea6bdbd2145a23c2592a51908a6c7c934ea59f37443abe"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5564,7 +5561,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "e9e1ae6d9a21a7458ab1cb3f313451920458359ee22c23eb0cf1c1ee6678c21c"
+          "checksumValue": "1934a9b98eb85941466d3b2296b5e4a6bb09fc5960890bf32df047ed0d9558b5"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5612,7 +5609,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "9d1c885039af5316e1cfbbde98ac3334552bc24e92146a1c4032f0aa920076bb"
+          "checksumValue": "afb8be6aab2fe2280d924d91f494c8866d6c2f94adbe1e3937908e0b35592a3b"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5768,7 +5765,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "85942ca535afadfb401dbcffe2f5e226a9c3af50089c43f0108121cfd61ea4f1"
+          "checksumValue": "d1444b1c841f91beff161e7f02ee8e7ad762718612b373b21ec6e5873c99ca4e"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5816,7 +5813,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "c8d21a38430f91a6fe161be91196895ed4c5eb42e1156b5ad1600766253e1b12"
+          "checksumValue": "987eb424d4dc5fbdf8c9c56f5676225e9cdfff41255a4e8f25ade26f6db01f08"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5828,7 +5825,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "8f23954727ed898c4f51b8b6b9d994010925dba4ab55030288d5df626cbfad2a"
+          "checksumValue": "220ffb643d2925c21faa5f5802c4b3988c8326586413fb2a09b7045f58c20539"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5840,7 +5837,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "9751473fbbbdb39e67cc4c95bab5a8dd3ce57dbfd2abc5a89e1f0022cd70346d"
+          "checksumValue": "4efd4c062e0c9ed20f09c4cdedc4c8f570f94ac13d56ccd0adb1deaf0ad0b631"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -5864,7 +5861,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "7b78cecfa6edba1f0b290a63695bd9972fed04308dee1db0fb53a1641cfd852e"
+          "checksumValue": "fc8191d0154c60c19361429734facf4e2085840254054de8fe45bdfc36b98f06"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -6087,7 +6084,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/glm/gtx/float_normalize.inl",
+      "fileName": "./include/glm/gtx/float_notmalize.inl",
       "SPDXID": "SPDXRef-binary-file-314",
       "checksums": [
         {
@@ -6176,7 +6173,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "e82bb795e2cae293b3dbc11fdece6bae16f09d54b5c4b990ed419f49d627720d"
+          "checksumValue": "c649f5844260c0405831d676cbcc93eb5745a97a27bb8da4d34563b628ffc80c"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -6260,31 +6257,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "a3915c0d4c966d3e67df79280b5af1205baf4cf8685f52e0a58add87e9458545"
-        }
-      ],
-      "licenseConcluded": "NOASSERTION",
-      "copyrightText": "NOASSERTION"
-    },
-    {
-      "fileName": "./include/glm/gtx/iteration.hpp",
-      "SPDXID": "SPDXRef-binary-file-329",
-      "checksums": [
-        {
-          "algorithm": "SHA256",
-          "checksumValue": "f41149fca1359d40aed11fc6dd5eb0a25f14d4c576a13655fd707cbbbe7e6fbf"
-        }
-      ],
-      "licenseConcluded": "NOASSERTION",
-      "copyrightText": "NOASSERTION"
-    },
-    {
-      "fileName": "./include/glm/gtx/iteration.inl",
-      "SPDXID": "SPDXRef-binary-file-330",
-      "checksums": [
-        {
-          "algorithm": "SHA256",
-          "checksumValue": "431c269dfb607f3a358682fe16677e29837317f41327ed852eeb6e839068115d"
+          "checksumValue": "256fa194cdcb170836b3ee05f480764eff1c16c4d41ab798034d2ae60d671422"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -6292,7 +6265,7 @@
     },
     {
       "fileName": "./include/glm/gtx/log_base.hpp",
-      "SPDXID": "SPDXRef-binary-file-331",
+      "SPDXID": "SPDXRef-binary-file-329",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6304,7 +6277,7 @@
     },
     {
       "fileName": "./include/glm/gtx/log_base.inl",
-      "SPDXID": "SPDXRef-binary-file-332",
+      "SPDXID": "SPDXRef-binary-file-330",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6316,7 +6289,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_cross_product.hpp",
-      "SPDXID": "SPDXRef-binary-file-333",
+      "SPDXID": "SPDXRef-binary-file-331",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6328,7 +6301,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_cross_product.inl",
-      "SPDXID": "SPDXRef-binary-file-334",
+      "SPDXID": "SPDXRef-binary-file-332",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6340,7 +6313,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_decompose.hpp",
-      "SPDXID": "SPDXRef-binary-file-335",
+      "SPDXID": "SPDXRef-binary-file-333",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6352,7 +6325,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_decompose.inl",
-      "SPDXID": "SPDXRef-binary-file-336",
+      "SPDXID": "SPDXRef-binary-file-334",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6364,7 +6337,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_factorisation.hpp",
-      "SPDXID": "SPDXRef-binary-file-337",
+      "SPDXID": "SPDXRef-binary-file-335",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6376,7 +6349,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_factorisation.inl",
-      "SPDXID": "SPDXRef-binary-file-338",
+      "SPDXID": "SPDXRef-binary-file-336",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6388,7 +6361,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_interpolation.hpp",
-      "SPDXID": "SPDXRef-binary-file-339",
+      "SPDXID": "SPDXRef-binary-file-337",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6400,7 +6373,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_interpolation.inl",
-      "SPDXID": "SPDXRef-binary-file-340",
+      "SPDXID": "SPDXRef-binary-file-338",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6412,7 +6385,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_major_storage.hpp",
-      "SPDXID": "SPDXRef-binary-file-341",
+      "SPDXID": "SPDXRef-binary-file-339",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6424,7 +6397,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_major_storage.inl",
-      "SPDXID": "SPDXRef-binary-file-342",
+      "SPDXID": "SPDXRef-binary-file-340",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6436,7 +6409,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_operation.hpp",
-      "SPDXID": "SPDXRef-binary-file-343",
+      "SPDXID": "SPDXRef-binary-file-341",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6448,7 +6421,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_operation.inl",
-      "SPDXID": "SPDXRef-binary-file-344",
+      "SPDXID": "SPDXRef-binary-file-342",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6460,7 +6433,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_query.hpp",
-      "SPDXID": "SPDXRef-binary-file-345",
+      "SPDXID": "SPDXRef-binary-file-343",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6472,7 +6445,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_query.inl",
-      "SPDXID": "SPDXRef-binary-file-346",
+      "SPDXID": "SPDXRef-binary-file-344",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6484,7 +6457,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_transform_2d.hpp",
-      "SPDXID": "SPDXRef-binary-file-347",
+      "SPDXID": "SPDXRef-binary-file-345",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6496,7 +6469,7 @@
     },
     {
       "fileName": "./include/glm/gtx/matrix_transform_2d.inl",
-      "SPDXID": "SPDXRef-binary-file-348",
+      "SPDXID": "SPDXRef-binary-file-346",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6508,7 +6481,7 @@
     },
     {
       "fileName": "./include/glm/gtx/mixed_product.hpp",
-      "SPDXID": "SPDXRef-binary-file-349",
+      "SPDXID": "SPDXRef-binary-file-347",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6520,7 +6493,7 @@
     },
     {
       "fileName": "./include/glm/gtx/mixed_product.inl",
-      "SPDXID": "SPDXRef-binary-file-350",
+      "SPDXID": "SPDXRef-binary-file-348",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6532,11 +6505,11 @@
     },
     {
       "fileName": "./include/glm/gtx/norm.hpp",
-      "SPDXID": "SPDXRef-binary-file-351",
+      "SPDXID": "SPDXRef-binary-file-349",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "95c2dbcbcaaa1abd06f07d5484cd2eff937d0a459feca6c1cb7b2776b96a3cb5"
+          "checksumValue": "21212d7440fc99ab7ff8dd3caf304a99d4e229890ff3eec106ee2e398c3d9af6"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -6544,7 +6517,7 @@
     },
     {
       "fileName": "./include/glm/gtx/norm.inl",
-      "SPDXID": "SPDXRef-binary-file-352",
+      "SPDXID": "SPDXRef-binary-file-350",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6556,7 +6529,7 @@
     },
     {
       "fileName": "./include/glm/gtx/normal.hpp",
-      "SPDXID": "SPDXRef-binary-file-353",
+      "SPDXID": "SPDXRef-binary-file-351",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6568,7 +6541,7 @@
     },
     {
       "fileName": "./include/glm/gtx/normal.inl",
-      "SPDXID": "SPDXRef-binary-file-354",
+      "SPDXID": "SPDXRef-binary-file-352",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6580,7 +6553,7 @@
     },
     {
       "fileName": "./include/glm/gtx/normalize_dot.hpp",
-      "SPDXID": "SPDXRef-binary-file-355",
+      "SPDXID": "SPDXRef-binary-file-353",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6592,7 +6565,7 @@
     },
     {
       "fileName": "./include/glm/gtx/normalize_dot.inl",
-      "SPDXID": "SPDXRef-binary-file-356",
+      "SPDXID": "SPDXRef-binary-file-354",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6604,7 +6577,7 @@
     },
     {
       "fileName": "./include/glm/gtx/number_precision.hpp",
-      "SPDXID": "SPDXRef-binary-file-357",
+      "SPDXID": "SPDXRef-binary-file-355",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6616,7 +6589,7 @@
     },
     {
       "fileName": "./include/glm/gtx/optimum_pow.hpp",
-      "SPDXID": "SPDXRef-binary-file-358",
+      "SPDXID": "SPDXRef-binary-file-356",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6628,7 +6601,7 @@
     },
     {
       "fileName": "./include/glm/gtx/optimum_pow.inl",
-      "SPDXID": "SPDXRef-binary-file-359",
+      "SPDXID": "SPDXRef-binary-file-357",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6640,7 +6613,7 @@
     },
     {
       "fileName": "./include/glm/gtx/orthonormalize.hpp",
-      "SPDXID": "SPDXRef-binary-file-360",
+      "SPDXID": "SPDXRef-binary-file-358",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6652,7 +6625,7 @@
     },
     {
       "fileName": "./include/glm/gtx/orthonormalize.inl",
-      "SPDXID": "SPDXRef-binary-file-361",
+      "SPDXID": "SPDXRef-binary-file-359",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6664,7 +6637,7 @@
     },
     {
       "fileName": "./include/glm/gtx/pca.hpp",
-      "SPDXID": "SPDXRef-binary-file-362",
+      "SPDXID": "SPDXRef-binary-file-360",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6676,11 +6649,11 @@
     },
     {
       "fileName": "./include/glm/gtx/pca.inl",
-      "SPDXID": "SPDXRef-binary-file-363",
+      "SPDXID": "SPDXRef-binary-file-361",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "0de91072986f8ddbb9c7facf141155ea2f5e38ea643e047c4511cab3e0e22ac0"
+          "checksumValue": "b5d95eef4c239cc26d1b1c08c20fbcd60cc31d36e6de9ad701571999c0a37ea8"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -6688,7 +6661,7 @@
     },
     {
       "fileName": "./include/glm/gtx/perpendicular.hpp",
-      "SPDXID": "SPDXRef-binary-file-364",
+      "SPDXID": "SPDXRef-binary-file-362",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6700,7 +6673,7 @@
     },
     {
       "fileName": "./include/glm/gtx/perpendicular.inl",
-      "SPDXID": "SPDXRef-binary-file-365",
+      "SPDXID": "SPDXRef-binary-file-363",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6712,7 +6685,7 @@
     },
     {
       "fileName": "./include/glm/gtx/polar_coordinates.hpp",
-      "SPDXID": "SPDXRef-binary-file-366",
+      "SPDXID": "SPDXRef-binary-file-364",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6724,7 +6697,7 @@
     },
     {
       "fileName": "./include/glm/gtx/polar_coordinates.inl",
-      "SPDXID": "SPDXRef-binary-file-367",
+      "SPDXID": "SPDXRef-binary-file-365",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6736,7 +6709,7 @@
     },
     {
       "fileName": "./include/glm/gtx/projection.hpp",
-      "SPDXID": "SPDXRef-binary-file-368",
+      "SPDXID": "SPDXRef-binary-file-366",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6748,7 +6721,7 @@
     },
     {
       "fileName": "./include/glm/gtx/projection.inl",
-      "SPDXID": "SPDXRef-binary-file-369",
+      "SPDXID": "SPDXRef-binary-file-367",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6760,7 +6733,7 @@
     },
     {
       "fileName": "./include/glm/gtx/quaternion.hpp",
-      "SPDXID": "SPDXRef-binary-file-370",
+      "SPDXID": "SPDXRef-binary-file-368",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6772,7 +6745,7 @@
     },
     {
       "fileName": "./include/glm/gtx/quaternion.inl",
-      "SPDXID": "SPDXRef-binary-file-371",
+      "SPDXID": "SPDXRef-binary-file-369",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6784,7 +6757,7 @@
     },
     {
       "fileName": "./include/glm/gtx/range.hpp",
-      "SPDXID": "SPDXRef-binary-file-372",
+      "SPDXID": "SPDXRef-binary-file-370",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6796,7 +6769,7 @@
     },
     {
       "fileName": "./include/glm/gtx/raw_data.hpp",
-      "SPDXID": "SPDXRef-binary-file-373",
+      "SPDXID": "SPDXRef-binary-file-371",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6808,7 +6781,7 @@
     },
     {
       "fileName": "./include/glm/gtx/raw_data.inl",
-      "SPDXID": "SPDXRef-binary-file-374",
+      "SPDXID": "SPDXRef-binary-file-372",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6820,7 +6793,7 @@
     },
     {
       "fileName": "./include/glm/gtx/rotate_normalized_axis.hpp",
-      "SPDXID": "SPDXRef-binary-file-375",
+      "SPDXID": "SPDXRef-binary-file-373",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6832,7 +6805,7 @@
     },
     {
       "fileName": "./include/glm/gtx/rotate_normalized_axis.inl",
-      "SPDXID": "SPDXRef-binary-file-376",
+      "SPDXID": "SPDXRef-binary-file-374",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6844,7 +6817,7 @@
     },
     {
       "fileName": "./include/glm/gtx/rotate_vector.hpp",
-      "SPDXID": "SPDXRef-binary-file-377",
+      "SPDXID": "SPDXRef-binary-file-375",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6856,7 +6829,7 @@
     },
     {
       "fileName": "./include/glm/gtx/rotate_vector.inl",
-      "SPDXID": "SPDXRef-binary-file-378",
+      "SPDXID": "SPDXRef-binary-file-376",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6868,7 +6841,7 @@
     },
     {
       "fileName": "./include/glm/gtx/scalar_multiplication.hpp",
-      "SPDXID": "SPDXRef-binary-file-379",
+      "SPDXID": "SPDXRef-binary-file-377",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6880,7 +6853,7 @@
     },
     {
       "fileName": "./include/glm/gtx/scalar_relational.hpp",
-      "SPDXID": "SPDXRef-binary-file-380",
+      "SPDXID": "SPDXRef-binary-file-378",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6892,7 +6865,7 @@
     },
     {
       "fileName": "./include/glm/gtx/scalar_relational.inl",
-      "SPDXID": "SPDXRef-binary-file-381",
+      "SPDXID": "SPDXRef-binary-file-379",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6904,7 +6877,7 @@
     },
     {
       "fileName": "./include/glm/gtx/spline.hpp",
-      "SPDXID": "SPDXRef-binary-file-382",
+      "SPDXID": "SPDXRef-binary-file-380",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6916,7 +6889,7 @@
     },
     {
       "fileName": "./include/glm/gtx/spline.inl",
-      "SPDXID": "SPDXRef-binary-file-383",
+      "SPDXID": "SPDXRef-binary-file-381",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6928,7 +6901,7 @@
     },
     {
       "fileName": "./include/glm/gtx/std_based_type.hpp",
-      "SPDXID": "SPDXRef-binary-file-384",
+      "SPDXID": "SPDXRef-binary-file-382",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6940,7 +6913,7 @@
     },
     {
       "fileName": "./include/glm/gtx/std_based_type.inl",
-      "SPDXID": "SPDXRef-binary-file-385",
+      "SPDXID": "SPDXRef-binary-file-383",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6952,7 +6925,7 @@
     },
     {
       "fileName": "./include/glm/gtx/string_cast.hpp",
-      "SPDXID": "SPDXRef-binary-file-386",
+      "SPDXID": "SPDXRef-binary-file-384",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6964,7 +6937,7 @@
     },
     {
       "fileName": "./include/glm/gtx/string_cast.inl",
-      "SPDXID": "SPDXRef-binary-file-387",
+      "SPDXID": "SPDXRef-binary-file-385",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -6975,32 +6948,8 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./include/glm/gtx/structured_bindings.hpp",
-      "SPDXID": "SPDXRef-binary-file-388",
-      "checksums": [
-        {
-          "algorithm": "SHA256",
-          "checksumValue": "470dac67c72ca9cf3b5e483c0b9eb1f4fbc18dd8e6df64927d194ea6dcb2818d"
-        }
-      ],
-      "licenseConcluded": "NOASSERTION",
-      "copyrightText": "NOASSERTION"
-    },
-    {
-      "fileName": "./include/glm/gtx/structured_bindings.inl",
-      "SPDXID": "SPDXRef-binary-file-389",
-      "checksums": [
-        {
-          "algorithm": "SHA256",
-          "checksumValue": "0db0e0a02bf45ac604a00868192fee53ef066e468517e9fb3e0e7013c9eba41d"
-        }
-      ],
-      "licenseConcluded": "NOASSERTION",
-      "copyrightText": "NOASSERTION"
-    },
-    {
       "fileName": "./include/glm/gtx/texture.hpp",
-      "SPDXID": "SPDXRef-binary-file-390",
+      "SPDXID": "SPDXRef-binary-file-386",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7012,11 +6961,11 @@
     },
     {
       "fileName": "./include/glm/gtx/texture.inl",
-      "SPDXID": "SPDXRef-binary-file-391",
+      "SPDXID": "SPDXRef-binary-file-387",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "3f85ffeece8950756403e3342c43e938c486d989a9d2e42e115a7ba1bd4306e1"
+          "checksumValue": "4d51eabc2274f45c8815185e9e2cb02c18793516f3a5153da7d27434d28ebec7"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -7024,7 +6973,7 @@
     },
     {
       "fileName": "./include/glm/gtx/transform.hpp",
-      "SPDXID": "SPDXRef-binary-file-392",
+      "SPDXID": "SPDXRef-binary-file-388",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7036,7 +6985,7 @@
     },
     {
       "fileName": "./include/glm/gtx/transform.inl",
-      "SPDXID": "SPDXRef-binary-file-393",
+      "SPDXID": "SPDXRef-binary-file-389",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7048,11 +6997,11 @@
     },
     {
       "fileName": "./include/glm/gtx/transform2.hpp",
-      "SPDXID": "SPDXRef-binary-file-394",
+      "SPDXID": "SPDXRef-binary-file-390",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "ebe892e0bb1e90d32d59471dc443e42faf69bbe61fdc012653a84a3f55d45603"
+          "checksumValue": "7163336bce7e7d066b2476e3dd6ecba9509741136c56eafae731560ef376b8bd"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -7060,11 +7009,11 @@
     },
     {
       "fileName": "./include/glm/gtx/transform2.inl",
-      "SPDXID": "SPDXRef-binary-file-395",
+      "SPDXID": "SPDXRef-binary-file-391",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "c8fa3fc2e8d8670e570bb017a23fc92e1a2f3c09e54c327d77e869d2852a52d5"
+          "checksumValue": "161e67264ea3d3a30415cc57529e6b6130bde8ac338d2005fd1a34f949819811"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -7072,7 +7021,7 @@
     },
     {
       "fileName": "./include/glm/gtx/type_aligned.hpp",
-      "SPDXID": "SPDXRef-binary-file-396",
+      "SPDXID": "SPDXRef-binary-file-392",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7084,7 +7033,7 @@
     },
     {
       "fileName": "./include/glm/gtx/type_aligned.inl",
-      "SPDXID": "SPDXRef-binary-file-397",
+      "SPDXID": "SPDXRef-binary-file-393",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7096,7 +7045,7 @@
     },
     {
       "fileName": "./include/glm/gtx/type_trait.hpp",
-      "SPDXID": "SPDXRef-binary-file-398",
+      "SPDXID": "SPDXRef-binary-file-394",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7108,7 +7057,7 @@
     },
     {
       "fileName": "./include/glm/gtx/type_trait.inl",
-      "SPDXID": "SPDXRef-binary-file-399",
+      "SPDXID": "SPDXRef-binary-file-395",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7120,7 +7069,7 @@
     },
     {
       "fileName": "./include/glm/gtx/vector_angle.hpp",
-      "SPDXID": "SPDXRef-binary-file-400",
+      "SPDXID": "SPDXRef-binary-file-396",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7132,7 +7081,7 @@
     },
     {
       "fileName": "./include/glm/gtx/vector_angle.inl",
-      "SPDXID": "SPDXRef-binary-file-401",
+      "SPDXID": "SPDXRef-binary-file-397",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7144,7 +7093,7 @@
     },
     {
       "fileName": "./include/glm/gtx/vector_query.hpp",
-      "SPDXID": "SPDXRef-binary-file-402",
+      "SPDXID": "SPDXRef-binary-file-398",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7156,7 +7105,7 @@
     },
     {
       "fileName": "./include/glm/gtx/vector_query.inl",
-      "SPDXID": "SPDXRef-binary-file-403",
+      "SPDXID": "SPDXRef-binary-file-399",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7168,11 +7117,11 @@
     },
     {
       "fileName": "./include/glm/gtx/vec_swizzle.hpp",
-      "SPDXID": "SPDXRef-binary-file-404",
+      "SPDXID": "SPDXRef-binary-file-400",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "fcadc62467981bf1961f7bf94064e09e08724fb59aaeb80de4208ab5134732e6"
+          "checksumValue": "2368be82b387468e74fa9a6e4e4c9e47a4b9c5cf62735dc2693af48a380d6180"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -7180,7 +7129,7 @@
     },
     {
       "fileName": "./include/glm/gtx/wrap.hpp",
-      "SPDXID": "SPDXRef-binary-file-405",
+      "SPDXID": "SPDXRef-binary-file-401",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7192,7 +7141,7 @@
     },
     {
       "fileName": "./include/glm/gtx/wrap.inl",
-      "SPDXID": "SPDXRef-binary-file-406",
+      "SPDXID": "SPDXRef-binary-file-402",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7204,7 +7153,7 @@
     },
     {
       "fileName": "./include/glm/integer.hpp",
-      "SPDXID": "SPDXRef-binary-file-407",
+      "SPDXID": "SPDXRef-binary-file-403",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7216,7 +7165,7 @@
     },
     {
       "fileName": "./include/glm/mat2x2.hpp",
-      "SPDXID": "SPDXRef-binary-file-408",
+      "SPDXID": "SPDXRef-binary-file-404",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7228,7 +7177,7 @@
     },
     {
       "fileName": "./include/glm/mat2x3.hpp",
-      "SPDXID": "SPDXRef-binary-file-409",
+      "SPDXID": "SPDXRef-binary-file-405",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7240,7 +7189,7 @@
     },
     {
       "fileName": "./include/glm/mat2x4.hpp",
-      "SPDXID": "SPDXRef-binary-file-410",
+      "SPDXID": "SPDXRef-binary-file-406",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7252,7 +7201,7 @@
     },
     {
       "fileName": "./include/glm/mat3x2.hpp",
-      "SPDXID": "SPDXRef-binary-file-411",
+      "SPDXID": "SPDXRef-binary-file-407",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7264,7 +7213,7 @@
     },
     {
       "fileName": "./include/glm/mat3x3.hpp",
-      "SPDXID": "SPDXRef-binary-file-412",
+      "SPDXID": "SPDXRef-binary-file-408",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7276,7 +7225,7 @@
     },
     {
       "fileName": "./include/glm/mat3x4.hpp",
-      "SPDXID": "SPDXRef-binary-file-413",
+      "SPDXID": "SPDXRef-binary-file-409",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7288,7 +7237,7 @@
     },
     {
       "fileName": "./include/glm/mat4x2.hpp",
-      "SPDXID": "SPDXRef-binary-file-414",
+      "SPDXID": "SPDXRef-binary-file-410",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7300,7 +7249,7 @@
     },
     {
       "fileName": "./include/glm/mat4x3.hpp",
-      "SPDXID": "SPDXRef-binary-file-415",
+      "SPDXID": "SPDXRef-binary-file-411",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7312,7 +7261,7 @@
     },
     {
       "fileName": "./include/glm/mat4x4.hpp",
-      "SPDXID": "SPDXRef-binary-file-416",
+      "SPDXID": "SPDXRef-binary-file-412",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7324,7 +7273,7 @@
     },
     {
       "fileName": "./include/glm/matrix.hpp",
-      "SPDXID": "SPDXRef-binary-file-417",
+      "SPDXID": "SPDXRef-binary-file-413",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7336,7 +7285,7 @@
     },
     {
       "fileName": "./include/glm/packing.hpp",
-      "SPDXID": "SPDXRef-binary-file-418",
+      "SPDXID": "SPDXRef-binary-file-414",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7348,11 +7297,11 @@
     },
     {
       "fileName": "./include/glm/simd/common.h",
-      "SPDXID": "SPDXRef-binary-file-419",
+      "SPDXID": "SPDXRef-binary-file-415",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "8beab72e4b5be9f1048e32c49efa979904fdfffbb61260ae1507502a8f830d67"
+          "checksumValue": "d3e6f206d3d1187b4981f606156bc697a00f047b41f2fa065a14391170fec77e"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -7360,7 +7309,7 @@
     },
     {
       "fileName": "./include/glm/simd/exponential.h",
-      "SPDXID": "SPDXRef-binary-file-420",
+      "SPDXID": "SPDXRef-binary-file-416",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7372,7 +7321,7 @@
     },
     {
       "fileName": "./include/glm/simd/geometric.h",
-      "SPDXID": "SPDXRef-binary-file-421",
+      "SPDXID": "SPDXRef-binary-file-417",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7384,7 +7333,7 @@
     },
     {
       "fileName": "./include/glm/simd/integer.h",
-      "SPDXID": "SPDXRef-binary-file-422",
+      "SPDXID": "SPDXRef-binary-file-418",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7396,11 +7345,11 @@
     },
     {
       "fileName": "./include/glm/simd/matrix.h",
-      "SPDXID": "SPDXRef-binary-file-423",
+      "SPDXID": "SPDXRef-binary-file-419",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "45c2390434e52509519c4cd942ae2d6e75406629fcb37a84df90052997d65f7c"
+          "checksumValue": "de72b2ee8363f2786d74b4b64bc05efb7e06d492b7e90ba96e4b82ec3c5f46c2"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -7408,11 +7357,11 @@
     },
     {
       "fileName": "./include/glm/simd/neon.h",
-      "SPDXID": "SPDXRef-binary-file-424",
+      "SPDXID": "SPDXRef-binary-file-420",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "7304855ac09a97cc8ad5fbcaaf326072e4ee980e163428aecc92eaee4e688349"
+          "checksumValue": "3a8d08ed65a472bb22d36a7578d28f352f4810136087384ef633c64db35daedd"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -7420,7 +7369,7 @@
     },
     {
       "fileName": "./include/glm/simd/packing.h",
-      "SPDXID": "SPDXRef-binary-file-425",
+      "SPDXID": "SPDXRef-binary-file-421",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7432,7 +7381,7 @@
     },
     {
       "fileName": "./include/glm/simd/platform.h",
-      "SPDXID": "SPDXRef-binary-file-426",
+      "SPDXID": "SPDXRef-binary-file-422",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7444,7 +7393,7 @@
     },
     {
       "fileName": "./include/glm/simd/trigonometric.h",
-      "SPDXID": "SPDXRef-binary-file-427",
+      "SPDXID": "SPDXRef-binary-file-423",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7456,7 +7405,7 @@
     },
     {
       "fileName": "./include/glm/simd/vector_relational.h",
-      "SPDXID": "SPDXRef-binary-file-428",
+      "SPDXID": "SPDXRef-binary-file-424",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7468,7 +7417,7 @@
     },
     {
       "fileName": "./include/glm/trigonometric.hpp",
-      "SPDXID": "SPDXRef-binary-file-429",
+      "SPDXID": "SPDXRef-binary-file-425",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7480,7 +7429,7 @@
     },
     {
       "fileName": "./include/glm/vec2.hpp",
-      "SPDXID": "SPDXRef-binary-file-430",
+      "SPDXID": "SPDXRef-binary-file-426",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7492,7 +7441,7 @@
     },
     {
       "fileName": "./include/glm/vec3.hpp",
-      "SPDXID": "SPDXRef-binary-file-431",
+      "SPDXID": "SPDXRef-binary-file-427",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7504,7 +7453,7 @@
     },
     {
       "fileName": "./include/glm/vec4.hpp",
-      "SPDXID": "SPDXRef-binary-file-432",
+      "SPDXID": "SPDXRef-binary-file-428",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7516,7 +7465,7 @@
     },
     {
       "fileName": "./include/glm/vector_relational.hpp",
-      "SPDXID": "SPDXRef-binary-file-433",
+      "SPDXID": "SPDXRef-binary-file-429",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7528,11 +7477,11 @@
     },
     {
       "fileName": "./lib/glm.lib",
-      "SPDXID": "SPDXRef-binary-file-434",
+      "SPDXID": "SPDXRef-binary-file-430",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "95740e30cf932fadcc5e34388c257d7e21963d2df85381683f9e48b975452456"
+          "checksumValue": "610299fa2688337fb8ce027a857101226226ad0d74d02f2de2ae84d5d638b383"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -7540,7 +7489,7 @@
     },
     {
       "fileName": "./share/glm/copyright",
-      "SPDXID": "SPDXRef-binary-file-435",
+      "SPDXID": "SPDXRef-binary-file-431",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7552,7 +7501,7 @@
     },
     {
       "fileName": "./share/glm/glmConfig-debug.cmake",
-      "SPDXID": "SPDXRef-binary-file-436",
+      "SPDXID": "SPDXRef-binary-file-432",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7564,7 +7513,7 @@
     },
     {
       "fileName": "./share/glm/glmConfig-release.cmake",
-      "SPDXID": "SPDXRef-binary-file-437",
+      "SPDXID": "SPDXRef-binary-file-433",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7576,7 +7525,7 @@
     },
     {
       "fileName": "./share/glm/glmConfig.cmake",
-      "SPDXID": "SPDXRef-binary-file-438",
+      "SPDXID": "SPDXRef-binary-file-434",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -7588,11 +7537,11 @@
     },
     {
       "fileName": "./share/glm/glmConfigVersion.cmake",
-      "SPDXID": "SPDXRef-binary-file-439",
+      "SPDXID": "SPDXRef-binary-file-435",
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "b2bbe0ad3f259c21be61f2e06d257335f6c1f86952ab6efd4e4810c7b47c0518"
+          "checksumValue": "d678b9845f13f8a0303e0f3e2b009637b3b92dd7e58b671483d7d3cad80c9015"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -7600,7 +7549,7 @@
     },
     {
       "fileName": "./share/glm/usage",
-      "SPDXID": "SPDXRef-binary-file-440",
+      "SPDXID": "SPDXRef-binary-file-436",
       "checksums": [
         {
           "algorithm": "SHA256",

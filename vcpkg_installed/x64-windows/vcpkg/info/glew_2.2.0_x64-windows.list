@@ -13,7 +13,6 @@ x64-windows/debug/lib/pkgconfig/
 x64-windows/debug/lib/pkgconfig/glew.pc
 x64-windows/include/
 x64-windows/include/GL/
-x64-windows/include/GL/eglew.h
 x64-windows/include/GL/glew.h
 x64-windows/include/GL/glxew.h
 x64-windows/include/GL/wglew.h

@@ -3,13 +3,13 @@
   "spdxVersion": "SPDX-2.2",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "documentNamespace": "https://spdx.org/spdxdocs/egl-registry-x64-windows-2025-05-27-28de1d27-26d3-4efb-918b-ced3d4dd0868",
-  "name": "egl-registry:x64-windows@2025-05-27 fdbf9b6de4617d0e78420a14f2c303dea9e8e6cd8332c4dbe9f968ce4fa6cb80",
+  "documentNamespace": "https://spdx.org/spdxdocs/egl-registry-x64-windows-2024-01-25-3383972f-69b8-4b35-94cb-30cabb674830",
+  "name": "egl-registry:x64-windows@2024-01-25 230d3f9614c1321add8dc822d5050fa31d2cf7e83b92ba9efc7a8b47bf939abe",
   "creationInfo": {
     "creators": [
       "Tool: vcpkg-2025-12-16-44bb3ce006467fc13ba37ca099f64077b8bbf84d"
     ],
-    "created": "2026-02-12T16:36:21Z"
+    "created": "2026-02-12T16:13:54Z"
   },
   "relationships": [
     {
@@ -77,10 +77,10 @@
     {
       "name": "egl-registry",
       "SPDXID": "SPDXRef-port",
-      "versionInfo": "2025-05-27",
-      "downloadLocation": "git+https://github.com/microsoft/vcpkg@980ed62fded868a1cb66460b32704aca030af013",
+      "versionInfo": "2024-01-25",
+      "downloadLocation": "git+https://github.com/microsoft/vcpkg@d883db43133dd223c4ffdbef4193943f6784d43a",
       "homepage": "https://github.com/KhronosGroup/EGL-Registry",
-      "licenseConcluded": "Apache-2.0",
+      "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
       "description": "EGL API and Extension Registry",
@@ -89,9 +89,9 @@
     {
       "name": "egl-registry:x64-windows",
       "SPDXID": "SPDXRef-binary",
-      "versionInfo": "fdbf9b6de4617d0e78420a14f2c303dea9e8e6cd8332c4dbe9f968ce4fa6cb80",
+      "versionInfo": "230d3f9614c1321add8dc822d5050fa31d2cf7e83b92ba9efc7a8b47bf939abe",
       "downloadLocation": "NONE",
-      "licenseConcluded": "Apache-2.0",
+      "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
       "comment": "This is a binary package built by vcpkg."
@@ -99,14 +99,14 @@
     {
       "SPDXID": "SPDXRef-resource-0",
       "name": "KhronosGroup/EGL-Registry",
-      "downloadLocation": "git+https://github.com/KhronosGroup/EGL-Registry@3ae2b7c48690d2ce13cc6db3db02dfc0572be65e",
+      "downloadLocation": "git+https://github.com/KhronosGroup/EGL-Registry@7db3005d4c2cb439f129a0adc931f3274f9019e6",
       "licenseConcluded": "NOASSERTION",
       "licenseDeclared": "NOASSERTION",
       "copyrightText": "NOASSERTION",
       "checksums": [
         {
           "algorithm": "SHA512",
-          "checksumValue": "c7b09ded4964fa427546bd345a29325105b79079b59642214dc8f04de113f42de2bc4272dbbbd4a801d92afc20297442fdfa12043a0900cf1e2b1cd83f260883"
+          "checksumValue": "474d7a4d614efed18151e0ff18840aaa8349ec0b01ec3cc4e6ff3f60fdb918e0b8c68dbb13e09dc5e7b081a9eb637b008b48b1a4be537d360f9a6d247b7b8802"
         }
       ]
     }
@@ -130,7 +130,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "e80fe4d22ceff08bfc59a9f62658ab027f3e1fd50f1e7a1e08390416043a7119"
+          "checksumValue": "1b3c1caef5c9f17a3210bb1452c1de64c79b7acf61dc8758250d27626a5ae5fe"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -142,7 +142,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "cdcc7fef095f5549bddb66b23ca4b946fc373c8acb73ac8c0de526a2dde80032"
+          "checksumValue": "f207cbb5f7ab4de2a41a020e0d503eaad4efc1afe5440bbbcf4689e657b57424"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -166,7 +166,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "42ef2c0fabd5bdf2654e7768f90ce4e9d49d0013e5b6ac984bf6d5f8afbb66c9"
+          "checksumValue": "f5f41711f5d7517eb50d63726d786d471a3e84a52b94fd9aca9b6262b629347c"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -178,7 +178,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "16850120313a5cb90e092e96a9542c16c67d31821fa0be896837d3886c90b0d5"
+          "checksumValue": "efc117e5cbbf21fa4f2e9dbfb3899eedb3235c0152a2f6d9ca4510b7505e400f"
         }
       ],
       "licenseConcluded": "NOASSERTION",
@@ -226,7 +226,7 @@
       "checksums": [
         {
           "algorithm": "SHA256",
-          "checksumValue": "ebcd93b23fdea21bf89522324f243acb067adfe06490b3aa494db0afc220b744"
+          "checksumValue": "a8144770957942e120941edc09c6a4d8c000b41ddc3ebe59e6321a4e176cd8a4"
         }
       ],
       "licenseConcluded": "NOASSERTION",
