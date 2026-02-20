@@ -15,8 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="helloworld.cpp">
-      <Filter>Soubory zdrojů</Filter>
+    <ClCompile Include="00 empty project\app.cpp">
+      <Filter>Zdrojové soubory</Filter>
     </ClCompile>
+    <ClCompile Include="00 empty project\main.cpp">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="00 empty project\app.hpp">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
