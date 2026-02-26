@@ -22,12 +22,21 @@ private:
     int winWidth = 800;
     int winHeight = 600;
 
+    // --- Window & Input State (Added for Tasks 1 & 2) ---
+    bool isCursorCaptured = false;
+    bool isFullscreen = false;
+    int prevWinPos[2] = { 0, 0 };
+    int prevWinSize[2] = { 800, 600 };
+
     // Colors
     float bgColor[4] = { 0.2f, 0.3f, 0.3f, 1.0f };
     float triangleColor[4] = { 1.0f, 0.5f, 0.2f, 1.0f };
 
     // Placeholder for your shader uniform (set this after you compile shaders)
     GLuint uniform_color_location = 0;
+
+    // --- Multi-monitor helper (Added for Task 2) ---
+    GLFWmonitor* getCurrentMonitor(GLFWwindow* window);
 
     // --- Static Callbacks ---
     static void glfw_error_callback(int error, const char* description);

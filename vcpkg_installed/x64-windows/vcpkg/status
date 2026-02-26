@@ -9,7 +9,7 @@ Package: vcpkg-cmake
 Version: 2024-04-23
 Architecture: x64-windows
 Multi-Arch: same
-Abi: 3bd510eceea8a3d0b3fbfceee813237350df6d1459b992833bbdf80b082a856f
+Abi: 912522f322c5418a7ed38ae208fdffa602d23fd101492587fecfd1a99ba0671d
 Status: install ok installed
 
 Package: fmt
@@ -55,7 +55,7 @@ Port-Version: 6
 Depends: opengl, vcpkg-cmake, vcpkg-cmake-config
 Architecture: x64-windows
 Multi-Arch: same
-Abi: d1887961b206eaa121e14c40576da73e060e68e52db4c3fbadc913ed79f4d02f
+Abi: 4cf50cb6c99a0c4a049a008d1a8d103b6bbfe51018ebaaa4d43c7995901dabd7
 Description: The OpenGL Extension Wrangler Library (GLEW) is a cross-platform open-source C/C++ extension loading library.
 Status: install ok installed
 
@@ -65,7 +65,7 @@ Port-Version: 1
 Depends: vcpkg-cmake, vcpkg-cmake-config
 Architecture: x64-windows
 Multi-Arch: same
-Abi: e4e8a7fadc64885449f09bf64b42a312a6dcf4ac3a3cc968d9fcb7abd0c73e6f
+Abi: 4909aa907b284a6640eb02bfb14d7d6e97f03e34c1e51512701c2f49301163cb
 Description: GLFW is a free, Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan application development. It provides a simple, platform-independent API for creating windows, contexts and surfaces, reading input, handling events, etc.
 Status: install ok installed
 
@@ -75,7 +75,7 @@ Port-Version: 3
 Depends: vcpkg-cmake, vcpkg-cmake-config
 Architecture: x64-windows
 Multi-Arch: same
-Abi: 4123ba5a7371d94bb5cbea5bb3e2f972d663b2d6ae26b099496eacf8dd42d78f
+Abi: 61060a48aafa402339b8c14e08ec401ec53442d452b7d8bfc4dcf7f747a08500
 Description: OpenGL Mathematics (GLM)
 Status: install ok installed
 
@@ -85,7 +85,31 @@ Port-Version: 1
 Depends: vcpkg-cmake, vcpkg-cmake-config
 Architecture: x64-windows
 Multi-Arch: same
-Abi: 90063e48c188c65b67f128afd9234517e748f9d159426330a3602797ae8e2ed8
+Abi: 28d3b74559b4d551093bb3ff649a328cdcada0b737ab55a0e797f5f7cb5dc94d
 Description: JSON for Modern C++
+Status: install ok installed
+
+Package: imgui
+Version: 1.91.9
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: f12ef92606c7577e51f26fb2279f70019f29ea66138d8e1c3e0ea33d5dd7f7f3
+Description: Bloat-free Immediate Mode Graphical User interface for C++ with minimal dependencies.
+Status: install ok installed
+
+Package: imgui
+Feature: glfw-binding
+Depends: glfw3
+Architecture: x64-windows
+Multi-Arch: same
+Description: Make available GLFW binding
+Status: install ok installed
+
+Package: imgui
+Feature: opengl3-binding
+Architecture: x64-windows
+Multi-Arch: same
+Description: Make available OpenGL3/ES/ES2 (modern) binding
 Status: install ok installed
 

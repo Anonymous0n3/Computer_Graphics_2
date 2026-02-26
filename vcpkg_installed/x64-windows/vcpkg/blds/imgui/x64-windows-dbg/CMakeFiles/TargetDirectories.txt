@@ -1,0 +1,6 @@
+C:/Users/42077/source/repos/Project1/vcpkg_installed/x64-windows/vcpkg/blds/imgui/x64-windows-dbg/CMakeFiles/imgui.dir
+C:/Users/42077/source/repos/Project1/vcpkg_installed/x64-windows/vcpkg/blds/imgui/x64-windows-dbg/CMakeFiles/edit_cache.dir
+C:/Users/42077/source/repos/Project1/vcpkg_installed/x64-windows/vcpkg/blds/imgui/x64-windows-dbg/CMakeFiles/rebuild_cache.dir
+C:/Users/42077/source/repos/Project1/vcpkg_installed/x64-windows/vcpkg/blds/imgui/x64-windows-dbg/CMakeFiles/list_install_components.dir
+C:/Users/42077/source/repos/Project1/vcpkg_installed/x64-windows/vcpkg/blds/imgui/x64-windows-dbg/CMakeFiles/install.dir
+C:/Users/42077/source/repos/Project1/vcpkg_installed/x64-windows/vcpkg/blds/imgui/x64-windows-dbg/CMakeFiles/install/local.dir
