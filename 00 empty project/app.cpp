@@ -1,5 +1,8 @@
-// icp.cpp // author: JJ
+// app.cpp (or icp.cpp)
 #include "app.hpp"
+#include "../ShaderProgram.hpp"
+#include "../OBJloader.hpp" // Required for loadOBJ
+
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -12,6 +15,7 @@
 #include <nlohmann/json.hpp>
 #include <opencv2/opencv.hpp>
 #include <io.h>
+#include "../OBJloader.hpp"
 
 using json = nlohmann::json;
 
@@ -191,58 +195,24 @@ bool App::init() {
         ImGui_ImplOpenGL3_Init("#version 460 core");
 
         // ==========================================
-        // SHADER COMPILATION & GEOMETRY SETUP
+        // MODULAR SHADER COMPILATION & GEOMETRY SETUP
         // ==========================================
-        const char* vertexShaderSource = "#version 460 core\n"
-            "layout (location = 0) in vec3 aPos;\n"
-            "void main()\n"
-            "{\n"
-            "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-            "}\0";
 
-        const char* fragmentShaderSource = "#version 460 core\n"
-            "out vec4 FragColor;\n"
-            "uniform vec4 ourColor;\n"
-            "void main()\n"
-            "{\n"
-            "   FragColor = ourColor;\n"
-            "}\n\0";
+        // 1. Initialize Shader
+        shader = std::make_unique<ShaderProgram>(std::filesystem::path("basic.vert"), std::filesystem::path("basic.frag"));
 
-        GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-        glCompileShader(vertexShader);
+        // 2. Load the OBJ file into vectors FIRST
+        std::vector<Vertex> loaded_vertices;
+        std::vector<GLuint> loaded_indices;
 
-        GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-        glCompileShader(fragmentShader);
-
-        shaderProgram = glCreateProgram();
-        glAttachShader(shaderProgram, vertexShader);
-        glAttachShader(shaderProgram, fragmentShader);
-        glLinkProgram(shaderProgram);
-
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
-
-        float vertices[] = {
-            -0.5f, -0.5f, 0.0f, // left  
-             0.5f, -0.5f, 0.0f, // right 
-             0.0f,  0.5f, 0.0f  // top   
-        };
-
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-
-        uniform_color_location = glGetUniformLocation(shaderProgram, "ourColor");
+        if (loadOBJ("triangle.obj", loaded_vertices, loaded_indices)) {
+            // 3. Pass the loaded vectors to the Mesh constructor
+            myModel = std::make_unique<Mesh>(loaded_vertices, loaded_indices, GL_TRIANGLES);
+        }
+        else {
+            // 4. Throw error if file is missing so we don't crash with a nullptr later!
+            throw std::runtime_error("CRITICAL ERROR: Could not find or load triangle.obj! Check your file path.");
+        }
 
         // Task 1.3: Show window after everything is loaded
         glfwShowWindow(window);
@@ -282,24 +252,27 @@ int App::run(void) {
             ImGui::Text("FPS: %d", fps);
             ImGui::Text("VSync: %s", vsyncEnabled ? "ON" : "OFF");
             ImGui::Text("Cursor Captured: %s (Press TAB)", isCursorCaptured ? "YES" : "NO");
-            ImGui::ColorEdit3("Background Color", bgColor); // Bonus: edit background color interactively!
+            ImGui::ColorEdit3("Background Color", bgColor);
             ImGui::End();
 
             // Clear canvas
             glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            // Render Triangle
-            glUseProgram(shaderProgram);
+            // ==========================================
+            // RENDER SCENE USING MODULAR CLASSES
+            // ==========================================
             float timeValue = glfwGetTime();
             triangleColor[1] = (sin(timeValue) / 2.0f) + 0.5f;
 
-            if (uniform_color_location != -1) {
-                glUniform4f(uniform_color_location, triangleColor[0], triangleColor[1], triangleColor[2], triangleColor[3]);
-            }
+            // 1. Bind the shader
+            shader->use();
 
-            glBindVertexArray(VAO);
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            // 2. Pass uniforms (Packed into a glm::vec4)
+            shader->setUniform("ourColor", glm::vec4(triangleColor[0], triangleColor[1], triangleColor[2], triangleColor[3]));
+
+            // 3. Draw the model
+            myModel->draw();
 
             // --- Task 1.1: Render ImGui over the scene ---
             ImGui::Render();
@@ -323,9 +296,8 @@ App::~App() {
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    if (VAO) glDeleteVertexArrays(1, &VAO);
-    if (VBO) glDeleteBuffers(1, &VBO);
-    if (shaderProgram) glDeleteProgram(shaderProgram);
+    // Notice: OpenGL buffers and shaders are now cleaned up automatically
+    // when the App is destroyed, thanks to std::unique_ptr and the RAII pattern!
 
     if (window) glfwDestroyWindow(window);
     glfwTerminate();
