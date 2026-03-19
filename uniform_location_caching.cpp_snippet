@@ -1,0 +1,81 @@
+#include <unordered_map>
+#include <memory>  // for automatic memory management = smart pointers (unique pointer)
+
+class ShaderProgram {
+
+// ...
+
+private:
+    // storage definition for location and array size (if uniform is an array)
+    struct uniform_info_t
+    { 
+    	GLint location;
+    	GLsizei count;
+    };
+
+	std::unordered_map<std::string, uniform_info_t> uniforms;
+    
+    void make_cache(void);
+
+}
+--------------------------------------------------------------------------------
+
+void ShaderProgram::make_cache(void) {
+	GLint uniform_count = 0;
+	glGetProgramiv(program_name, GL_ACTIVE_UNIFORMS, &uniform_count);
+
+	if (uniform_count != 0)
+	{
+		GLint 	max_name_len = 0;
+		GLsizei length = 0;
+		GLsizei count = 0;
+		GLenum 	type = GL_NONE;
+		glGetProgramiv(program_name, GL_ACTIVE_UNIFORM_MAX_LENGTH, &max_name_len);
+
+		// create storage for longest variable name 
+		auto uniform_name = std::make_unique<char[]>(max_name_len);
+
+		for (GLint i = 0; i < uniform_count; ++i)
+		{
+			// ask OpenGL to get all parameters of single uniform variable
+			// see https://docs.gl/gl4/glGetActiveUniform
+			glGetActiveUniform(program_name, i, max_name_len, &length, &count, &type, uniform_name.get());
+
+			// copy to hash map
+			uniform_info_t uniform_info = {};
+			uniform_info.location = glGetUniformLocation(program_name, uniform_name.get());
+			uniform_info.count = count;
+
+			uniforms.emplace(std::make_pair(std::string(uniform_name.get(), length), uniform_info));
+		}
+	}
+
+}
+
+--------------------------------------------------------------------------------
+
+##################
+##     USAGE
+##################
+
+//
+// check the presence & get location (exceptions are slow(er))
+//
+auto search = uniforms.find("my_array[0]"); 
+if (search != uniforms.end()) {
+    glProgramUniform??(program_name, search->second.location, value);    
+} else {
+    // not found
+} 
+
+//
+// NOTE: you can use  glProgramUniform??(...) variant instead glUniform??(...)
+//       Shader program does not have to be active - BINDLESS = FASTER.
+
+// uniform arrays allows to address subelements as array_location + element_number
+glProgramUniform??(program_name, uniforms.at("my_array[0]").location + 5, value);
+
+// if you want to modify the whole array
+glProgramUniform??v(program_name, uniforms.at("my_array[0]").location, uniforms.at("my_array[0]").count, my_array);
+
+

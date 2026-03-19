@@ -1,6 +1,6 @@
 // main.cpp
 #include <iostream>
-#include "00 empty project/"
+#include "00 empty project/app.hpp"
 
 int main() {
     try {
