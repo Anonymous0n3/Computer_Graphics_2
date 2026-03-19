@@ -142,13 +142,16 @@
   <ItemGroup>
     <ClInclude Include="00 empty project\app.hpp" />
     <ClInclude Include="assets.hpp" />
+    <ClInclude Include="camera.hpp" />
     <ClInclude Include="Mesh.hpp" />
+    <ClInclude Include="Model.hpp" />
     <ClInclude Include="non_copyable.hpp" />
     <ClInclude Include="OBJloader.hpp" />
     <ClInclude Include="ShaderProgram.hpp" />
     <ClInclude Include="usage_example.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="basic.vert" />
     <None Include="config.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

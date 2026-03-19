@@ -8,6 +8,8 @@
 
 #include "../ShaderProgram.hpp"
 #include "../Mesh.hpp"
+#include "../Model.hpp"
+#include "../camera.hpp"
 
 class App {
 public:
@@ -19,6 +21,11 @@ public:
 
 private:
     GLFWwindow* window = nullptr;
+    Camera myCam{ glm::vec3(0.0f, 0.0f, 3.0f) }; // Start 3 units back
+    double lastFrameTime = 0.0;
+    double cursorLastX = 400.0; // Half of default window width
+    double cursorLastY = 300.0;
+    bool firstMouse = true;
 
     // --- Application State ---
     bool vsyncEnabled = true;
@@ -31,14 +38,17 @@ private:
     bool isFullscreen = false;
     int prevWinPos[2] = { 0, 0 };
     int prevWinSize[2] = { 800, 600 };
+    glm::mat4 projection_matrix = glm::mat4(1.0f);
+    float fov = 60.0f;
+    void update_projection_matrix(); // Helper method
 
     // Colors
     float bgColor[4] = { 0.2f, 0.3f, 0.3f, 1.0f };
     float triangleColor[4] = { 1.0f, 0.5f, 0.2f, 1.0f };
 
     // --- Modular Resources ---
-    std::unique_ptr<ShaderProgram> shader;
-    std::unique_ptr<Mesh> myModel;
+    std::shared_ptr<ShaderProgram> shader;
+    std::unique_ptr<Model> mySceneObject;
 
     // --- Multi-monitor helper ---
     GLFWmonitor* getCurrentMonitor(GLFWwindow* window);

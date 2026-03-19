@@ -1,16 +1,21 @@
 #version 460 core
 
-// input vertex attributes
+// Your vertex attributes (matching your Mesh class)
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 normal;
+layout (location = 2) in vec2 texture_coords;
 
-in vec3 aPos;   // position: MUST exist
-in vec3 aColor; // any additional attributes are optional, any data type, etc.
+// The Transformation Matrices
+uniform mat4 uM_m; // Model Matrix
+uniform mat4 uV_m; // View Matrix
+uniform mat4 uP_m; // Projection Matrix
 
-out vec3 color; // optional output attribute
-
-void main()
-{
-    // Outputs the positions/coordinates of all vertices, MUST WRITE
-    gl_Position = vec4(aPos, 1.0f);
+void main() {
+    // Note: Matrix multiplication in GLSL is read right-to-left!
+    // 1. We start with the local vertex position.
+    // 2. Multiply by Model matrix (moves it into the world).
+    // 3. Multiply by View matrix (moves it relative to the camera).
+    // 4. Multiply by Projection matrix (applies perspective/zoom).
     
-    color = aColor; // copy color to output
+    gl_Position = uP_m * uV_m * uM_m * vec4(position, 1.0);
 }

@@ -161,3 +161,13 @@ std::string ShaderProgram::textFileRead(const std::filesystem::path& filepath) {
     ss << file.rdbuf();
     return ss.str();
 }
+void ShaderProgram::setUniform(const std::string& name, const glm::mat4& val) {
+    auto loc = getUniformLocation(name);
+    glProgramUniformMatrix4fv(ID, loc, 1, GL_FALSE, glm::value_ptr(val));
+}
+
+// You are also missing the glm::vec3 implementation, which you might need later:
+void ShaderProgram::setUniform(const std::string& name, const glm::vec3& val) {
+    auto loc = getUniformLocation(name);
+    glProgramUniform3fv(ID, loc, 1, glm::value_ptr(val));
+}
