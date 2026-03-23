@@ -50,7 +50,7 @@ GLFWmonitor* App::getCurrentMonitor(GLFWwindow* window) {
     int nmonitors, i;
     int wx, wy, ww, wh;
     int mx, my, mw, mh;
-    int overlap, bestoverlap = 0;
+    int overlap = 0, bestoverlap = 0;
     GLFWmonitor* bestmonitor = nullptr;
     GLFWmonitor** monitors;
     const GLFWvidmode* mode;
@@ -177,6 +177,7 @@ bool App::init() {
 
         // FIX: Enable Z-Buffer so 3D objects don't overwrite each other weirdly!
         glEnable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE); // Draw both sides of the triangle!
 
         glfwSetWindowUserPointer(window, this);
         glfwSetKeyCallback(window, key_callback);
@@ -277,10 +278,11 @@ int App::run(void) {
                 // Pass matrices
                 shader->setUniform("uP_m", projection_matrix);
                 shader->setUniform("uV_m", myCam.GetViewMatrix());
-
+                shader->setUniform("ourColor", glm::vec4(triangleColor[0], triangleColor[1], triangleColor[2], triangleColor[3]));
                 // Spin the object using global time
-                mySceneObject->setEulerAngles(glm::vec3(0.0f, static_cast<float>(currentTime) * 45.0f, 0.0f));
-
+                //mySceneObject->setEulerAngles(glm::vec3(0.0f, static_cast<float>(currentTime) * 45.0f, 0.0f));
+                // Try spinning it on the Z axis instead to see if it becomes visible
+                mySceneObject->setEulerAngles(glm::vec3(0.0f, 0.0f, static_cast<float>(currentTime) * 45.0f));
                 // Draw it!
                 mySceneObject->draw();
             }

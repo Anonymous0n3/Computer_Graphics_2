@@ -41,23 +41,19 @@ public:
 
     glm::vec3 ProcessInput(GLFWwindow* window, GLfloat deltaTime)
     {
-        glm::vec3 direction{0};
-          
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            direction += Front; // add unit vector to final direction  
+        glm::vec3 direction{ 0.0f };
 
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-            direction -= Front;
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) direction += Front;
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) direction -= Front;
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) direction -= Right;
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) direction += Right;
 
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-            direction -= Right;       
+        // FIX: Only normalize if the user is actually pressing a movement key!
+        if (glm::length(direction) > 0.0f) {
+            return glm::normalize(direction) * MovementSpeed * deltaTime;
+        }
 
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-            direction += Right;
-
-        //... up, down, diagonal, ... 
-
-        return glm::normalize(direction) * MovementSpeed * deltaTime;
+        return glm::vec3(0.0f); // Return a zero vector if no keys are pressed
     }
 
     void ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constraintPitch = GL_TRUE)
