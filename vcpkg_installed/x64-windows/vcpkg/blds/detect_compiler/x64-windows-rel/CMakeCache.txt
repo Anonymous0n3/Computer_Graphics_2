@@ -113,7 +113,7 @@ CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP:UNINITIALIZED=TRUE
 CMAKE_LINKER:FILEPATH=C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/link.exe
 
 //No help, variable specified on the command line.
-CMAKE_MAKE_PROGRAM:UNINITIALIZED=C:/Users/42077/AppData/Local/vcpkg/downloads/tools/ninja/1.13.1-windows/ninja.exe
+CMAKE_MAKE_PROGRAM:UNINITIALIZED=C:\Users\42077\AppData\Local\vcpkg\downloads\tools\ninja-1.13.2-windows\ninja.exe
 
 //Flags used by the linker during the creation of modules during
 // all build types.
@@ -213,7 +213,7 @@ CMAKE_SYSTEM_NAME:STRING=Windows
 
 CMAKE_SYSTEM_PROCESSOR:STRING=AMD64
 
-CMAKE_SYSTEM_VERSION:STRING=10.0.26100
+CMAKE_SYSTEM_VERSION:STRING=10.0.26200
 
 //The CMake toolchain file
 CMAKE_TOOLCHAIN_FILE:FILEPATH=C:/Program Files/Microsoft Visual Studio/18/Insiders/VC/vcpkg/scripts/buildsystems/vcpkg.cmake

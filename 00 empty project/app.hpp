@@ -54,4 +54,20 @@ private:
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
     static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
+    // Projection
+    glm::mat4 projection = glm::mat4(1.0f);
+    float fov = 45.0f;
+
+    // Camera state
+    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+    glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+    // Mouse state for looking around
+    float yaw = -90.0f; // Initialize to -90 to point towards -z
+    float pitch = 0.0f;
+    float lastX = 400.0f; // Half of default window width
+    float lastY = 300.0f;
+    bool firstMouse = true;
 };

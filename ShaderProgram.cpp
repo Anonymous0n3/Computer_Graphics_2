@@ -17,15 +17,13 @@ ShaderProgram::ShaderProgram(const std::string& vertex_shader_code, const std::s
     ID = link_shader(shader_ids);
 }
 
-// FIX 1: Use textFileRead instead of read_text_file
 ShaderProgram::ShaderProgram(const std::filesystem::path& VS_file, const std::filesystem::path& FS_file) :
     ShaderProgram{ textFileRead(VS_file), textFileRead(FS_file) } {
 }
 
-// FIX 4: Changed return type from GLuint to GLint to properly handle the -1 error code
 GLint ShaderProgram::getUniformLocation(const std::string& name) {
     // Check if the location is already cached
-    if (uniform_location_cache.contains(name)) { // C++20 feature
+    if (uniform_location_cache.contains(name)) {
         return uniform_location_cache[name];
     }
 
@@ -41,21 +39,32 @@ GLint ShaderProgram::getUniformLocation(const std::string& name) {
 }
 
 GLint ShaderProgram::getAttribLocation(const std::string& name) {
-    // FIX 2: Added .c_str()
     GLint loc = glGetAttribLocation(ID, name.c_str());
     if (loc == -1) {
         std::cerr << "No vertex attribute with name: " << name << ", or reserved name (starting with gl_)\n";
-    } // FIX 2: Added missing closing bracket
+    }
     return loc;
 }
 
-// Uniform setting
+// ==========================================
+// UNIFORM SETTERS
+// ==========================================
+
 void ShaderProgram::setUniform(const std::string& name, const GLfloat val) {
     auto loc = getUniformLocation(name);
     glProgramUniform1f(ID, loc, val);
 }
 
-// FIX 3: Changed in_vec4 to val to match the function body
+void ShaderProgram::setUniform(const std::string& name, const GLint val) {
+    auto loc = getUniformLocation(name);
+    glProgramUniform1i(ID, loc, val);
+}
+
+void ShaderProgram::setUniform(const std::string& name, const glm::vec3& val) {
+    auto loc = getUniformLocation(name);
+    glProgramUniform3fv(ID, loc, 1, glm::value_ptr(val));
+}
+
 void ShaderProgram::setUniform(const std::string& name, const glm::vec4& val) {
     auto loc = getUniformLocation(name);
     glProgramUniform4fv(ID, loc, 1, glm::value_ptr(val));
@@ -66,15 +75,29 @@ void ShaderProgram::setUniform(const std::string& name, const glm::mat3& val) {
     glProgramUniformMatrix3fv(ID, loc, 1, GL_FALSE, glm::value_ptr(val));
 }
 
+void ShaderProgram::setUniform(const std::string& name, const glm::mat4& val) {
+    auto loc = getUniformLocation(name);
+    glProgramUniformMatrix4fv(ID, loc, 1, GL_FALSE, glm::value_ptr(val));
+}
+
 void ShaderProgram::setUniform(const std::string& name, const std::vector<GLint>& val) {
     auto loc = getUniformLocation(name);
     glProgramUniform1iv(ID, loc, val.size(), val.data());
+}
+
+void ShaderProgram::setUniform(const std::string& name, const std::vector<GLfloat>& val) {
+    auto loc = getUniformLocation(name);
+    glProgramUniform1fv(ID, loc, val.size(), val.data());
 }
 
 void ShaderProgram::setUniform(const std::string& name, const std::vector<glm::vec3>& val) {
     auto loc = getUniformLocation(name);
     glProgramUniform3fv(ID, loc, val.size(), glm::value_ptr(val[0]));
 }
+
+// ==========================================
+// SHADER COMPILATION & LINKING
+// ==========================================
 
 std::string ShaderProgram::getShaderInfoLog(const GLuint obj) {
     int log_length = 0;

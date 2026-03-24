@@ -2,7 +2,7 @@
 #include <string>
 #include <filesystem>
 #include <unordered_map>
-#include <vector> // FIX: Added missing include for std::vector
+#include <vector>
 #include <GL/glew.h> 
 #include <glm/glm.hpp>
 #include "non_copyable.hpp"
@@ -21,7 +21,6 @@ public:
 
     // activate shader
     void use(void) {
-        // FIX: Changed currently_used_ID to currently_used to match the member variable
         if (ID == currently_used) // already being used
             return;
         else {
@@ -61,10 +60,8 @@ private:
     GLuint ID{ 0 }; // default = 0, empty shader
     inline static GLuint currently_used{ 0 };
 
-    // FIX: Changed GLuint to GLint to handle the -1 error state
     std::unordered_map<std::string, GLint> uniform_location_cache;
 
-    // FIX: Changed return type from GLuint to GLint
     GLint getUniformLocation(const std::string& name);
 
     std::string textFileRead(const std::filesystem::path& filename); // load text file

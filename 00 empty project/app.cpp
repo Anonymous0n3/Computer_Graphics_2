@@ -105,6 +105,10 @@ void App::key_callback(GLFWwindow* window, int key, int scancode, int action, in
 
 void App::fbsize_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+    App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
+    if (height == 0) height = 1; // Prevent divide by zero
+    // Update projection matrix whenever the window size changes
+    app->projection = glm::perspective(glm::radians(app->fov), (float)width / (float)height, 0.1f, 100.0f);
 }
 
 void App::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
@@ -122,6 +126,38 @@ void App::mouse_button_callback(GLFWwindow* window, int button, int action, int 
 
 void App::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
+
+    // Only move camera if cursor is captured (via the TAB key logic you added)
+    if (!app->isCursorCaptured) return;
+
+    if (app->firstMouse) {
+        app->lastX = xpos;
+        app->lastY = ypos;
+        app->firstMouse = false;
+    }
+
+    float xoffset = xpos - app->lastX;
+    float yoffset = app->lastY - ypos; // Reversed since y-coordinates go from bottom to top
+    app->lastX = xpos;
+    app->lastY = ypos;
+
+    float sensitivity = 0.1f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    app->yaw += xoffset;
+    app->pitch += yoffset;
+
+    // Constrain pitch
+    if (app->pitch > 89.0f)  app->pitch = 89.0f;
+    if (app->pitch < -89.0f) app->pitch = -89.0f;
+
+    // Calculate new Front vector
+    glm::vec3 front;
+    front.x = cos(glm::radians(app->yaw)) * cos(glm::radians(app->pitch));
+    front.y = sin(glm::radians(app->pitch));
+    front.z = sin(glm::radians(app->yaw)) * cos(glm::radians(app->pitch));
+    app->cameraFront = glm::normalize(front);
 }
 
 void App::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
@@ -205,7 +241,7 @@ bool App::init() {
         std::vector<Vertex> loaded_vertices;
         std::vector<GLuint> loaded_indices;
 
-        if (loadOBJ("triangle.obj", loaded_vertices, loaded_indices)) {
+        if (loadOBJ("bunny.obj", loaded_vertices, loaded_indices)) {
             // 3. Pass the loaded vectors to the Mesh constructor
             myModel = std::make_unique<Mesh>(loaded_vertices, loaded_indices, GL_TRIANGLES);
         }
@@ -231,8 +267,16 @@ int App::run(void) {
         double previousTime = glfwGetTime();
         int frameCount = 0;
 
+        // Variable to track time between frames for smooth movement
+        double lastFrameTime = glfwGetTime();
+
         while (!glfwWindowShouldClose(window)) {
             double currentTime = glfwGetTime();
+
+            // --- CALCULATE DELTA TIME ---
+            float deltaTime = static_cast<float>(currentTime - lastFrameTime);
+            lastFrameTime = currentTime;
+
             frameCount++;
             if (currentTime - previousTime >= 1.0) {
                 fps = frameCount;
@@ -240,6 +284,20 @@ int App::run(void) {
                 previousTime = currentTime;
                 std::string title = "FPS: " + std::to_string(fps) + " | VSync: " + (vsyncEnabled ? "ON" : "OFF");
                 glfwSetWindowTitle(window, title.c_str());
+            }
+
+            // --- KEYBOARD CAMERA MOVEMENT (Task 3) ---
+            // Only move if the user has clicked in / captured the cursor
+            if (isCursorCaptured) {
+                float cameraSpeed = 2.5f * deltaTime;
+                if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+                    cameraPos += cameraSpeed * cameraFront;
+                if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+                    cameraPos -= cameraSpeed * cameraFront;
+                if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+                    cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+                if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+                    cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
             }
 
             // --- Task 1.1: Start ImGui Frame ---
@@ -252,6 +310,10 @@ int App::run(void) {
             ImGui::Text("FPS: %d", fps);
             ImGui::Text("VSync: %s", vsyncEnabled ? "ON" : "OFF");
             ImGui::Text("Cursor Captured: %s (Press TAB)", isCursorCaptured ? "YES" : "NO");
+
+            // Let's add camera coordinates to ImGui to help you debug!
+            ImGui::Text("Camera Pos: (%.2f, %.2f, %.2f)", cameraPos.x, cameraPos.y, cameraPos.z);
+
             ImGui::ColorEdit3("Background Color", bgColor);
             ImGui::End();
 
@@ -262,11 +324,25 @@ int App::run(void) {
             // ==========================================
             // RENDER SCENE USING MODULAR CLASSES
             // ==========================================
-            float timeValue = glfwGetTime();
+            float timeValue = (float)glfwGetTime();
             triangleColor[1] = (sin(timeValue) / 2.0f) + 0.5f;
 
             // 1. Bind the shader
             shader->use();
+
+            // --- Task 2: CALCULATE MVP MATRICES ---
+
+            // Model: Rotate the loaded object slowly around the Y-axis over time
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::rotate(model, timeValue, glm::vec3(0.0f, 1.0f, 0.0f));
+
+            // View: Create camera view matrix based on current position and front vector
+            glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
+            // Send MVP matrices to the shader
+            shader->setUniform("model", model);
+            shader->setUniform("view", view);
+            shader->setUniform("projection", projection);
 
             // 2. Pass uniforms (Packed into a glm::vec4)
             shader->setUniform("ourColor", glm::vec4(triangleColor[0], triangleColor[1], triangleColor[2], triangleColor[3]));
