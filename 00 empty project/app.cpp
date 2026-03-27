@@ -17,6 +17,7 @@
 #include <io.h>
 #include "../Mesh.hpp"
 
+std::unique_ptr<Mesh> generateCube();
 using json = nlohmann::json;
 
 // --- Helper for Task 2: Multi-monitor setup ---
@@ -245,7 +246,7 @@ bool App::init() {
         if (msaaEnabled) {
             glEnable(GL_MULTISAMPLE);
         }
-
+        glEnable(GL_DEPTH_TEST);
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -268,7 +269,7 @@ bool App::init() {
         else {
             throw std::runtime_error("CRITICAL ERROR: Could not find or load model! Check your file path.");
         }
-        //myModel = std::make_unique<Mesh>(generateCube());
+        //myModel = generateCube();
         // --- Task 4: Load Texture ---
         try {
             // Změň název souboru na reálný obrázek, který máš ve složce s projektem!
