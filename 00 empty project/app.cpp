@@ -1,4 +1,4 @@
-// app.cpp (or icp.cpp)
+// app.cpp
 #include "app.hpp"
 #include "../ShaderProgram.hpp"
 #include "../OBJloader.hpp" // Required for loadOBJ

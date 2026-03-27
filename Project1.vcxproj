@@ -138,6 +138,7 @@
     <ClCompile Include="meshgen.cpp" />
     <ClCompile Include="OBJloader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="00 empty project\app.hpp" />
@@ -146,7 +147,7 @@
     <ClInclude Include="non_copyable.hpp" />
     <ClInclude Include="OBJloader.hpp" />
     <ClInclude Include="ShaderProgram.hpp" />
-    <ClInclude Include="usage_example.hpp" />
+    <ClInclude Include="Texture.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config.json" />
