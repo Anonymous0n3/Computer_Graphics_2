@@ -1,12 +1,13 @@
 #version 460 core
-
 out vec4 FragColor;
 
-// This uniform matches the exact name we are calling in app.cpp
+in vec2 TexCoords; // Přijímáme z Vertex Shaderu
+
 uniform vec4 ourColor; 
+uniform sampler2D tex0; // Naše textura
 
 void main()
 {
-    // Apply the color sent from C++
-    FragColor = ourColor; 
+    // Smícháme barvu z textury s naší uniform barvou
+    FragColor = texture(tex0, TexCoords) * ourColor; 
 }

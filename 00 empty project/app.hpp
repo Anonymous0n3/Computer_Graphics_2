@@ -9,6 +9,7 @@
 
 #include "../ShaderProgram.hpp"
 #include "../Mesh.hpp"
+#include "../Texture.hpp"
 
 class App {
 public:
@@ -26,6 +27,7 @@ private:
     int fps = 0;
     int winWidth = 800;
     int winHeight = 600;
+    bool msaaEnabled = true;
 
     // --- Window & Input State ---
     bool isCursorCaptured = false;
@@ -40,6 +42,7 @@ private:
     // --- Modular Resources ---
     std::unique_ptr<ShaderProgram> shader;
     std::unique_ptr<Mesh> myModel;
+    std::unique_ptr<Texture> myTexture;
 
     // --- Multi-monitor helper ---
     GLFWmonitor* getCurrentMonitor(GLFWwindow* window);

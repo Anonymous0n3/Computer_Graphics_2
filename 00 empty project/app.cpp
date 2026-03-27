@@ -1,7 +1,7 @@
-// app.cpp
 #include "app.hpp"
 #include "../ShaderProgram.hpp"
-#include "../OBJloader.hpp" // Required for loadOBJ
+#include "../OBJloader.hpp"
+#include "../Texture.hpp" // Přidáno pro Task 4
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -15,7 +15,7 @@
 #include <nlohmann/json.hpp>
 #include <opencv2/opencv.hpp>
 #include <io.h>
-#include "../OBJloader.hpp"
+#include "../Mesh.hpp"
 
 using json = nlohmann::json;
 
@@ -83,23 +83,45 @@ void App::key_callback(GLFWwindow* window, int key, int scancode, int action, in
         glfwSetInputMode(window, GLFW_CURSOR, app->isCursorCaptured ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
     }
 
-    // Task 2: Toggle Full-screen mode
+    // Task 2 (from previous): Toggle Full-screen mode
     if (key == GLFW_KEY_F11 && action == GLFW_PRESS) {
         app->isFullscreen = !app->isFullscreen;
         if (app->isFullscreen) {
-            // Save current position and size
             glfwGetWindowPos(window, &app->prevWinPos[0], &app->prevWinPos[1]);
             glfwGetWindowSize(window, &app->prevWinSize[0], &app->prevWinSize[1]);
 
-            // Get mostly overlapped monitor
             GLFWmonitor* monitor = app->getCurrentMonitor(window);
             const GLFWvidmode* mode = glfwGetVideoMode(monitor);
             glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
         }
         else {
-            // Restore position and size
             glfwSetWindowMonitor(window, nullptr, app->prevWinPos[0], app->prevWinPos[1], app->prevWinSize[0], app->prevWinSize[1], 0);
         }
+    }
+
+    // --- Task 1: Toggle MSAA ---
+    if (key == GLFW_KEY_M && action == GLFW_PRESS) {
+        app->msaaEnabled = !app->msaaEnabled;
+        if (app->msaaEnabled) {
+            glEnable(GL_MULTISAMPLE);
+            std::cout << "MSAA Zapnuto\n";
+        }
+        else {
+            glDisable(GL_MULTISAMPLE);
+            std::cout << "MSAA Vypnuto\n";
+        }
+    }
+
+    // --- Task 2: Screenshot ---
+    if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+        cv::Mat img(app->winHeight, app->winWidth, CV_8UC3);
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
+        glReadPixels(0, 0, app->winWidth, app->winHeight, GL_BGR, GL_UNSIGNED_BYTE, img.data);
+        cv::flip(img, img, 0); // Otevřené okno má 0,0 vlevo dole, OpenCV vlevo nahoře
+
+        std::string filename = app->msaaEnabled ? "screenshot_msaa_on.png" : "screenshot_msaa_off.png";
+        cv::imwrite(filename, img);
+        std::cout << "Screenshot uložen jako: " << filename << "\n";
     }
 }
 
@@ -107,14 +129,12 @@ void App::fbsize_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
     App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
     if (height == 0) height = 1; // Prevent divide by zero
-    // Update projection matrix whenever the window size changes
     app->projection = glm::perspective(glm::radians(app->fov), (float)width / (float)height, 0.1f, 100.0f);
 }
 
 void App::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-    // ImGui needs to know about mouse interactions
     ImGuiIO& io = ImGui::GetIO();
-    if (io.WantCaptureMouse) return; // Prevent clicking through ImGui windows
+    if (io.WantCaptureMouse) return;
 
     App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
@@ -127,7 +147,6 @@ void App::mouse_button_callback(GLFWwindow* window, int button, int action, int 
 void App::cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
 
-    // Only move camera if cursor is captured (via the TAB key logic you added)
     if (!app->isCursorCaptured) return;
 
     if (app->firstMouse) {
@@ -137,7 +156,7 @@ void App::cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
     }
 
     float xoffset = xpos - app->lastX;
-    float yoffset = app->lastY - ypos; // Reversed since y-coordinates go from bottom to top
+    float yoffset = app->lastY - ypos;
     app->lastX = xpos;
     app->lastY = ypos;
 
@@ -148,11 +167,9 @@ void App::cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
     app->yaw += xoffset;
     app->pitch += yoffset;
 
-    // Constrain pitch
     if (app->pitch > 89.0f)  app->pitch = 89.0f;
     if (app->pitch < -89.0f) app->pitch = -89.0f;
 
-    // Calculate new Front vector
     glm::vec3 front;
     front.x = cos(glm::radians(app->yaw)) * cos(glm::radians(app->pitch));
     front.y = sin(glm::radians(app->pitch));
@@ -193,7 +210,9 @@ bool App::init() {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
-        // Task 1.3: Hide window during startup
+        // --- Task 1: MSAA 4x Hint ---
+        glfwWindowHint(GLFW_SAMPLES, 4);
+
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
         window = glfwCreateWindow(winWidth, winHeight, "OpenGL Lab", nullptr, nullptr);
@@ -222,7 +241,11 @@ bool App::init() {
 
         glfwSwapInterval(vsyncEnabled ? 1 : 0);
 
-        // Task 1.1: Initialize ImGui
+        // --- Task 1: Enable MSAA by default ---
+        if (msaaEnabled) {
+            glEnable(GL_MULTISAMPLE);
+        }
+
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -234,23 +257,28 @@ bool App::init() {
         // MODULAR SHADER COMPILATION & GEOMETRY SETUP
         // ==========================================
 
-        // 1. Initialize Shader
         shader = std::make_unique<ShaderProgram>(std::filesystem::path("basic.vert"), std::filesystem::path("basic.frag"));
 
-        // 2. Load the OBJ file into vectors FIRST
         std::vector<Vertex> loaded_vertices;
         std::vector<GLuint> loaded_indices;
 
         if (loadOBJ("bunny.obj", loaded_vertices, loaded_indices)) {
-            // 3. Pass the loaded vectors to the Mesh constructor
             myModel = std::make_unique<Mesh>(loaded_vertices, loaded_indices, GL_TRIANGLES);
         }
         else {
-            // 4. Throw error if file is missing so we don't crash with a nullptr later!
-            throw std::runtime_error("CRITICAL ERROR: Could not find or load triangle.obj! Check your file path.");
+            throw std::runtime_error("CRITICAL ERROR: Could not find or load model! Check your file path.");
+        }
+        //myModel = std::make_unique<Mesh>(generateCube());
+        // --- Task 4: Load Texture ---
+        try {
+            // Změň název souboru na reálný obrázek, který máš ve složce s projektem!
+            myTexture = std::make_unique<Texture>(std::filesystem::path("box.jpg"));
+            std::cout << "Textura uspesne nactena.\n";
+        }
+        catch (const std::exception& e) {
+            std::cerr << "Varovani: Texturu se nepodarilo nacist. " << e.what() << "\n";
         }
 
-        // Task 1.3: Show window after everything is loaded
         glfwShowWindow(window);
 
     }
@@ -266,14 +294,10 @@ int App::run(void) {
     try {
         double previousTime = glfwGetTime();
         int frameCount = 0;
-
-        // Variable to track time between frames for smooth movement
         double lastFrameTime = glfwGetTime();
 
         while (!glfwWindowShouldClose(window)) {
             double currentTime = glfwGetTime();
-
-            // --- CALCULATE DELTA TIME ---
             float deltaTime = static_cast<float>(currentTime - lastFrameTime);
             lastFrameTime = currentTime;
 
@@ -282,12 +306,12 @@ int App::run(void) {
                 fps = frameCount;
                 frameCount = 0;
                 previousTime = currentTime;
-                std::string title = "FPS: " + std::to_string(fps) + " | VSync: " + (vsyncEnabled ? "ON" : "OFF");
+                std::string title = "FPS: " + std::to_string(fps) +
+                    " | VSync: " + (vsyncEnabled ? "ON" : "OFF") +
+                    " | MSAA: " + (msaaEnabled ? "ON" : "OFF"); // Přidáno MSAA do titulku
                 glfwSetWindowTitle(window, title.c_str());
             }
 
-            // --- KEYBOARD CAMERA MOVEMENT (Task 3) ---
-            // Only move if the user has clicked in / captured the cursor
             if (isCursorCaptured) {
                 float cameraSpeed = 2.5f * deltaTime;
                 if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -300,57 +324,51 @@ int App::run(void) {
                     cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
             }
 
-            // --- Task 1.1: Start ImGui Frame ---
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            // Create a simple ImGui debug window
             ImGui::Begin("Debug Menu");
             ImGui::Text("FPS: %d", fps);
-            ImGui::Text("VSync: %s", vsyncEnabled ? "ON" : "OFF");
+            ImGui::Text("VSync: %s (Press V)", vsyncEnabled ? "ON" : "OFF");
+            ImGui::Text("MSAA: %s (Press M)", msaaEnabled ? "ON" : "OFF");
             ImGui::Text("Cursor Captured: %s (Press TAB)", isCursorCaptured ? "YES" : "NO");
-
-            // Let's add camera coordinates to ImGui to help you debug!
             ImGui::Text("Camera Pos: (%.2f, %.2f, %.2f)", cameraPos.x, cameraPos.y, cameraPos.z);
-
             ImGui::ColorEdit3("Background Color", bgColor);
+            if (ImGui::Button("Take Screenshot (Press P)")) {
+                // Můžeš implementovat i tlačítko na screenshot
+            }
             ImGui::End();
 
-            // Clear canvas
             glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            // ==========================================
-            // RENDER SCENE USING MODULAR CLASSES
-            // ==========================================
             float timeValue = (float)glfwGetTime();
-            triangleColor[1] = (sin(timeValue) / 2.0f) + 0.5f;
+            // Upravil jsem barvu, ať je bílá a zbytečně netónuje texturu. Můžeš vrátit zpět na timeValue, pokud chceš.
+            triangleColor[0] = 1.0f;
+            triangleColor[1] = 1.0f;
+            triangleColor[2] = 1.0f;
 
-            // 1. Bind the shader
             shader->use();
 
-            // --- Task 2: CALCULATE MVP MATRICES ---
+            // --- Task 4: Bind Texture ---
+            if (myTexture) {
+                myTexture->bind(); // Připojí texturu k texturovací jednotce 0
+                shader->setUniform("tex0", 0); // Řekne shaderu, aby četl z jednotky 0
+            }
 
-            // Model: Rotate the loaded object slowly around the Y-axis over time
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::rotate(model, timeValue, glm::vec3(0.0f, 1.0f, 0.0f));
 
-            // View: Create camera view matrix based on current position and front vector
             glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
-            // Send MVP matrices to the shader
             shader->setUniform("model", model);
             shader->setUniform("view", view);
             shader->setUniform("projection", projection);
-
-            // 2. Pass uniforms (Packed into a glm::vec4)
             shader->setUniform("ourColor", glm::vec4(triangleColor[0], triangleColor[1], triangleColor[2], triangleColor[3]));
 
-            // 3. Draw the model
             myModel->draw();
 
-            // --- Task 1.1: Render ImGui over the scene ---
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -367,13 +385,9 @@ int App::run(void) {
 }
 
 App::~App() {
-    // Task 1.1: Cleanup ImGui resources
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
-    // Notice: OpenGL buffers and shaders are now cleaned up automatically
-    // when the App is destroyed, thanks to std::unique_ptr and the RAII pattern!
 
     if (window) glfwDestroyWindow(window);
     glfwTerminate();

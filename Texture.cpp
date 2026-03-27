@@ -1,8 +1,11 @@
 // Texture.cpp
 #include "Texture.hpp"
+#include <cmath>
+#include <algorithm>
+#include <stdexcept>
 
 cv::Mat Texture::load_image(const std::filesystem::path& path) {
-    cv::Mat image = cv::imread(path.string(), cv::IMREAD_UNCHANGED); // Read with (potential) alpha, do not rotate by EXIF.
+    cv::Mat image = cv::imread(path.string(), cv::IMREAD_COLOR); // Read with (potential) alpha, do not rotate by EXIF.
 
     // check! cv::imread does NOT throw exception, if the image is not found.
     if (image.empty()) {
@@ -27,20 +30,31 @@ Texture::Texture(cv::Mat const& image, Interpolation interpolation)
 
     glCreateTextures(GL_TEXTURE_2D, 1, &name_);
 
+    // Pro Direct State Access (glTextureStorage2D) musíme alokovat dostatek paměti pro mipmapy předem.
+    // Zjistíme, kolik úrovní budeme potřebovat (1 úroveň = žádné mipmapy, jen základní obrázek).
+    GLsizei mipmap_levels = 1;
+    if (interpolation == Interpolation::linear_mipmap_linear) {
+        mipmap_levels = 1 + static_cast<GLsizei>(std::floor(std::log2(std::max(image.cols, image.rows))));
+    }
+
     switch (image.type()) {
     case CV_8UC1: // single channel image - greyscale
         // upload only one channel
-        glTextureStorage2D(name_, 1, GL_R8, image.cols, image.rows);
+        glTextureStorage2D(name_, mipmap_levels, GL_R8, image.cols, image.rows);
         glTextureSubImage2D(name_, 0, 0, 0, image.cols, image.rows, GL_RED, GL_UNSIGNED_BYTE, image.data);
         // use data also for other channels
         glTextureParameteri(name_, GL_TEXTURE_SWIZZLE_G, GL_RED);
         glTextureParameteri(name_, GL_TEXTURE_SWIZZLE_B, GL_RED);
         break;
-    case CV_8UC3:  // RGB
-        //TODO
+    case CV_8UC3:  // RGB (OpenCV používá v paměti BGR)
+        glTextureStorage2D(name_, mipmap_levels, GL_RGB8, image.cols, image.rows);
+        // Parametr GL_BGR říká OpenGL, jak jdou byty z OpenCV za sebou
+        glTextureSubImage2D(name_, 0, 0, 0, image.cols, image.rows, GL_BGR, GL_UNSIGNED_BYTE, image.data);
         break;
-    case CV_8UC4:  // RGBA
-        //TODO
+    case CV_8UC4:  // RGBA (OpenCV používá v paměti BGRA)
+        glTextureStorage2D(name_, mipmap_levels, GL_RGBA8, image.cols, image.rows);
+        // Parametr GL_BGRA říká OpenGL, jak jdou byty z OpenCV za sebou
+        glTextureSubImage2D(name_, 0, 0, 0, image.cols, image.rows, GL_BGRA, GL_UNSIGNED_BYTE, image.data);
         break;
     default:
         throw std::runtime_error{ "unsupported number of channels or channel depth in texture" };
@@ -48,8 +62,9 @@ Texture::Texture(cv::Mat const& image, Interpolation interpolation)
 
     set_interpolation(interpolation);
 
-    // Configures the way the texture repeats
-    //TODO glTextureParameteri(...)
+    // Configures the way the texture repeats (Task 4)
+    glTextureParameteri(name_, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTextureParameteri(name_, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 Texture::~Texture() {
@@ -123,11 +138,13 @@ void Texture::replace_image(const cv::Mat& image) {
     case CV_8UC3:  // RGB
         if (tex_format != GL_RGB8)
             throw std::runtime_error("improper image replacement channel data, GL_RGB8 was the original");
+        // Opět dbáme na formát BGR z OpenCV
         glTextureSubImage2D(name_, 0, 0, 0, image.cols, image.rows, GL_BGR, GL_UNSIGNED_BYTE, image.data);
         break;
     case CV_8UC4:  // RGBA
         if (tex_format != GL_RGBA8)
             throw std::runtime_error("improper image replacement channel data, GL_RGBA8 was the original");
+        // Opět dbáme na formát BGRA z OpenCV
         glTextureSubImage2D(name_, 0, 0, 0, image.cols, image.rows, GL_BGRA, GL_UNSIGNED_BYTE, image.data);
         break;
     default:
