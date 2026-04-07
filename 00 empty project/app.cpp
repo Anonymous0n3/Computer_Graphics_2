@@ -269,7 +269,7 @@ bool App::init() {
         else {
             throw std::runtime_error("CRITICAL ERROR: Could not find or load model! Check your file path.");
         }
-        //myModel = generateCube();
+
         // --- Task 4: Load Texture ---
         try {
             // Změň název souboru na reálný obrázek, který máš ve složce s projektem!
@@ -309,7 +309,7 @@ int App::run(void) {
                 previousTime = currentTime;
                 std::string title = "FPS: " + std::to_string(fps) +
                     " | VSync: " + (vsyncEnabled ? "ON" : "OFF") +
-                    " | MSAA: " + (msaaEnabled ? "ON" : "OFF"); // Přidáno MSAA do titulku
+                    " | MSAA: " + (msaaEnabled ? "ON" : "OFF");
                 glfwSetWindowTitle(window, title.c_str());
             }
 
@@ -337,7 +337,7 @@ int App::run(void) {
             ImGui::Text("Camera Pos: (%.2f, %.2f, %.2f)", cameraPos.x, cameraPos.y, cameraPos.z);
             ImGui::ColorEdit3("Background Color", bgColor);
             if (ImGui::Button("Take Screenshot (Press P)")) {
-                // Můžeš implementovat i tlačítko na screenshot
+                // Feature handled in key_callback
             }
             ImGui::End();
 
@@ -345,28 +345,83 @@ int App::run(void) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             float timeValue = (float)glfwGetTime();
-            // Upravil jsem barvu, ať je bílá a zbytečně netónuje texturu. Můžeš vrátit zpět na timeValue, pokud chceš.
-            triangleColor[0] = 1.0f;
-            triangleColor[1] = 1.0f;
-            triangleColor[2] = 1.0f;
 
             shader->use();
 
-            // --- Task 4: Bind Texture ---
+            // Setup Material
             if (myTexture) {
-                myTexture->bind(); // Připojí texturu k texturovací jednotce 0
-                shader->setUniform("tex0", 0); // Řekne shaderu, aby četl z jednotky 0
+                myTexture->bind();
+                shader->setUniform("material.diffuse", 0);
+            }
+            shader->setUniform("material.shininess", 32.0f);
+
+            // Pass Camera Position for specular lighting
+            shader->setUniform("viewPos", cameraPos);
+
+            // ==========================================
+            // TASK 1: Directional Light (Sun)
+            // ==========================================
+            // Make the sun rotate over time
+            glm::vec3 sunDir = glm::vec3(sin(timeValue), -1.0f, cos(timeValue));
+            shader->setUniform("dirLight.direction", sunDir);
+            shader->setUniform("dirLight.ambient", glm::vec3(0.05f));
+            shader->setUniform("dirLight.diffuse", glm::vec3(0.4f));
+            shader->setUniform("dirLight.specular", glm::vec3(0.5f));
+
+            // ==========================================
+            // TASK 2: 3 Point Lights
+            // ==========================================
+            // Define positions (orbiting around the center)
+            std::vector<glm::vec3> pointLightPositions = {
+                glm::vec3(2.0f * sin(timeValue),  0.2f,  2.0f * cos(timeValue)), // Moving
+                glm::vec3(2.3f, -1.3f, -2.0f),                                   // Static
+                glm::vec3(-2.0f,  2.0f, -3.0f)                                    // Static
+            };
+            // Define colors for visual distinction
+            std::vector<glm::vec3> pointLightColors = {
+                glm::vec3(1.0f, 0.0f, 0.0f), // Red
+                glm::vec3(0.0f, 1.0f, 0.0f), // Green
+                glm::vec3(0.0f, 0.0f, 1.0f)  // Blue
+            };
+
+            for (int i = 0; i < 3; i++) {
+                std::string prefix = "pointLights[" + std::to_string(i) + "].";
+                shader->setUniform(prefix + "position", pointLightPositions[i]);
+                shader->setUniform(prefix + "ambient", pointLightColors[i] * 0.05f);
+                shader->setUniform(prefix + "diffuse", pointLightColors[i] * 0.8f);
+                shader->setUniform(prefix + "specular", pointLightColors[i] * 1.0f);
+                // Attenuation params for distance ~50
+                shader->setUniform(prefix + "constant", 1.0f);
+                shader->setUniform(prefix + "linear", 0.09f);
+                shader->setUniform(prefix + "quadratic", 0.032f);
             }
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::rotate(model, timeValue, glm::vec3(0.0f, 1.0f, 0.0f));
+            // ==========================================
+            // TASK 3: Spot Light (Headlight)
+            // ==========================================
+            shader->setUniform("spotLight.position", cameraPos);
+            shader->setUniform("spotLight.direction", cameraFront);
+            shader->setUniform("spotLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+            shader->setUniform("spotLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+            shader->setUniform("spotLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+            shader->setUniform("spotLight.constant", 1.0f);
+            shader->setUniform("spotLight.linear", 0.09f);
+            shader->setUniform("spotLight.quadratic", 0.032f);
+            // Cutoff angles (Using cosine because dot product returns cosine of the angle)
+            shader->setUniform("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+            shader->setUniform("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
+            // ==========================================
+            // Standard Transformations
+            // ==========================================
+            glm::mat4 model = glm::mat4(1.0f);
+            // Optional: Rotate the model so you can see the lighting react
+            model = glm::rotate(model, timeValue * 0.5f, glm::vec3(0.0f, 1.0f, 0.0f));
             glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
             shader->setUniform("model", model);
             shader->setUniform("view", view);
             shader->setUniform("projection", projection);
-            shader->setUniform("ourColor", glm::vec4(triangleColor[0], triangleColor[1], triangleColor[2], triangleColor[3]));
 
             myModel->draw();
 
