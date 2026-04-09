@@ -53,6 +53,7 @@ uniform DirLight dirLight;
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform SpotLight spotLight;
 uniform Material material;
+uniform float objectAlpha = 1.0;
 
 // --- Function Prototypes ---
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
@@ -61,21 +62,19 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
-    // Properties
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
     
-    // Task 1: Directional lighting
     vec3 result = CalcDirLight(dirLight, norm, viewDir);
     
-    // Task 2: Point lights
     for(int i = 0; i < NR_POINT_LIGHTS; i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
         
-    // Task 3: Spot light
     result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    
     
-    FragColor = vec4(result, 1.0);
+    // TASK 1: Combine lighting result with texture alpha and our custom transparency multiplier
+    float texAlpha = texture(material.diffuse, TexCoords).a;
+    FragColor = vec4(result, texAlpha * objectAlpha);
 }
 
 // Calculates the color when using a directional light.
