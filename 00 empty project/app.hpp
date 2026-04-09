@@ -74,4 +74,21 @@ private:
     float lastX = 400.0f; // Half of default window width
     float lastY = 300.0f;
     bool firstMouse = true;
+
+    // --- Task 2: Collision Detection Data ---
+    struct AABB {
+        glm::vec3 min;
+        glm::vec3 max;
+    };
+    AABB mapBounds = { {-10.0f, -5.0f, -10.0f}, {10.0f, 10.0f, 10.0f} };
+    AABB enemyBox = { {-2.0f, -1.0f, -5.0f}, {2.0f, 3.0f, -1.0f} }; // An invisible enemy block
+
+    // --- Task 3: Particle System Data ---
+    struct Particle {
+        glm::vec3 position;
+        glm::vec3 velocity;
+        float life; // Drops from 1.0 down to 0.0
+    };
+    std::vector<Particle> particles;
+    AABB modelLocalAABB;
 };

@@ -1,7 +1,7 @@
 #include "app.hpp"
 #include "../ShaderProgram.hpp"
 #include "../OBJloader.hpp"
-#include "../Texture.hpp" // Přidáno pro Task 4
+#include "../Texture.hpp" 
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -11,16 +11,14 @@
 #include <stdexcept>
 #include <cmath>
 #include <vector>
-#include <algorithm> // For std::max and std::min
+#include <algorithm>
 #include <nlohmann/json.hpp>
 #include <opencv2/opencv.hpp>
-#include <io.h>
 #include "../Mesh.hpp"
 
-std::unique_ptr<Mesh> generateCube();
 using json = nlohmann::json;
 
-// --- Helper for Task 2: Multi-monitor setup ---
+// --- Multi-monitor helper ---
 GLFWmonitor* App::getCurrentMonitor(GLFWwindow* window) {
     int nmonitors, i;
     int wx, wy, ww, wh;
@@ -43,7 +41,6 @@ GLFWmonitor* App::getCurrentMonitor(GLFWwindow* window) {
         mw = mode->width;
         mh = mode->height;
 
-        // Calculate intersection area between window and monitor
         int overlapArea = std::max(0, std::min(wx + ww, mx + mw) - std::max(wx, mx)) * std::max(0, std::min(wy + wh, my + mh) - std::max(wy, my));
 
         if (bestoverlap < overlapArea) {
@@ -54,7 +51,7 @@ GLFWmonitor* App::getCurrentMonitor(GLFWwindow* window) {
     return bestmonitor ? bestmonitor : glfwGetPrimaryMonitor();
 }
 
-// --- Static Callback Implementations ---
+// --- Callbacks ---
 void App::glfw_error_callback(int error, const char* description) {
     throw std::runtime_error("GLFW Error (" + std::to_string(error) + "): " + std::string(description));
 }
@@ -67,24 +64,20 @@ void APIENTRY App::glDebugOutput(GLenum source, GLenum type, unsigned int id, GL
 void App::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
 
-    // Quit handling
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
 
-    // Toggle VSync
     if (key == GLFW_KEY_V && action == GLFW_PRESS) {
         app->vsyncEnabled = !app->vsyncEnabled;
         glfwSwapInterval(app->vsyncEnabled ? 1 : 0);
     }
 
-    // Task 1.2: Capture/Release cursor
     if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
         app->isCursorCaptured = !app->isCursorCaptured;
         glfwSetInputMode(window, GLFW_CURSOR, app->isCursorCaptured ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
     }
 
-    // Task 2 (from previous): Toggle Full-screen mode
     if (key == GLFW_KEY_F11 && action == GLFW_PRESS) {
         app->isFullscreen = !app->isFullscreen;
         if (app->isFullscreen) {
@@ -100,7 +93,6 @@ void App::key_callback(GLFWwindow* window, int key, int scancode, int action, in
         }
     }
 
-    // --- Task 1: Toggle MSAA ---
     if (key == GLFW_KEY_M && action == GLFW_PRESS) {
         app->msaaEnabled = !app->msaaEnabled;
         if (app->msaaEnabled) {
@@ -113,12 +105,11 @@ void App::key_callback(GLFWwindow* window, int key, int scancode, int action, in
         }
     }
 
-    // --- Task 2: Screenshot ---
     if (key == GLFW_KEY_P && action == GLFW_PRESS) {
         cv::Mat img(app->winHeight, app->winWidth, CV_8UC3);
         glPixelStorei(GL_PACK_ALIGNMENT, 1);
         glReadPixels(0, 0, app->winWidth, app->winHeight, GL_BGR, GL_UNSIGNED_BYTE, img.data);
-        cv::flip(img, img, 0); // Otevřené okno má 0,0 vlevo dole, OpenCV vlevo nahoře
+        cv::flip(img, img, 0);
 
         std::string filename = app->msaaEnabled ? "screenshot_msaa_on.png" : "screenshot_msaa_off.png";
         cv::imwrite(filename, img);
@@ -129,7 +120,7 @@ void App::key_callback(GLFWwindow* window, int key, int scancode, int action, in
 void App::fbsize_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
     App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
-    if (height == 0) height = 1; // Prevent divide by zero
+    if (height == 0) height = 1;
     app->projection = glm::perspective(glm::radians(app->fov), (float)width / (float)height, 0.1f, 100.0f);
 }
 
@@ -210,10 +201,7 @@ bool App::init() {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
-
-        // --- Task 1: MSAA 4x Hint ---
-        glfwWindowHint(GLFW_SAMPLES, 4);
-
+        glfwWindowHint(GLFW_SAMPLES, 4); // MSAA
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
         window = glfwCreateWindow(winWidth, winHeight, "OpenGL Lab", nullptr, nullptr);
@@ -222,10 +210,8 @@ bool App::init() {
         glfwMakeContextCurrent(window);
         glewExperimental = GL_TRUE;
         if (glewInit() != GLEW_OK) throw std::runtime_error("Failed to initialize GLEW");
-        glGetError();
 
         glfwSetWindowUserPointer(window, this);
-
         glfwSetKeyCallback(window, key_callback);
         glfwSetFramebufferSizeCallback(window, fbsize_callback);
         glfwSetMouseButtonCallback(window, mouse_button_callback);
@@ -242,21 +228,22 @@ bool App::init() {
 
         glfwSwapInterval(vsyncEnabled ? 1 : 0);
 
-        // --- Task 1: Enable MSAA by default ---
-        if (msaaEnabled) {
-            glEnable(GL_MULTISAMPLE);
-        }
+        if (msaaEnabled) glEnable(GL_MULTISAMPLE);
         glEnable(GL_DEPTH_TEST);
+
+        // --- Task 1: Enable Blending for transparency ---
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        // --- Task 3: Enable Point Size for particles ---
+        glEnable(GL_PROGRAM_POINT_SIZE);
+
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         ImGui::StyleColorsDark();
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init("#version 460 core");
-
-        // ==========================================
-        // MODULAR SHADER COMPILATION & GEOMETRY SETUP
-        // ==========================================
 
         shader = std::make_unique<ShaderProgram>(std::filesystem::path("basic.vert"), std::filesystem::path("basic.frag"));
 
@@ -265,15 +252,23 @@ bool App::init() {
 
         if (loadOBJ("bunny.obj", loaded_vertices, loaded_indices)) {
             myModel = std::make_unique<Mesh>(loaded_vertices, loaded_indices, GL_TRIANGLES);
-            std::cout << "zajic nacten";
+
+            // --- Task 2: Calculate local AABB for collision ---
+            if (!loaded_vertices.empty()) {
+                modelLocalAABB.min = loaded_vertices[0].Position;
+                modelLocalAABB.max = loaded_vertices[0].Position;
+                for (const auto& v : loaded_vertices) {
+                    modelLocalAABB.min = glm::min(modelLocalAABB.min, v.Position);
+                    modelLocalAABB.max = glm::max(modelLocalAABB.max, v.Position);
+                }
+                std::cout << "Model AABB vypocitan.\n";
+            }
         }
         else {
             throw std::runtime_error("CRITICAL ERROR: Could not find or load model! Check your file path.");
         }
 
-        // --- Task 4: Load Texture ---
         try {
-            // Změň název souboru na reálný obrázek, který máš ve složce s projektem!
             myTexture = std::make_unique<Texture>(std::filesystem::path("box.jpg"));
             std::cout << "Textura uspesne nactena.\n";
         }
@@ -303,6 +298,8 @@ int App::run(void) {
             float deltaTime = static_cast<float>(currentTime - lastFrameTime);
             lastFrameTime = currentTime;
 
+            float timeValue = (float)currentTime; // Vypocet casu pro rotace a animace
+
             frameCount++;
             if (currentTime - previousTime >= 1.0) {
                 fps = frameCount;
@@ -314,18 +311,76 @@ int App::run(void) {
                 glfwSetWindowTitle(window, title.c_str());
             }
 
+            // ==========================================
+            // INPUT A KOLIZE KAMERY
+            // ==========================================
             if (isCursorCaptured) {
                 float cameraSpeed = 2.5f * deltaTime;
-                if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-                    cameraPos += cameraSpeed * cameraFront;
-                if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-                    cameraPos -= cameraSpeed * cameraFront;
-                if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-                    cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-                if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-                    cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+                glm::vec3 nextPos = cameraPos;
+
+                if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) nextPos += cameraSpeed * cameraFront;
+                if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) nextPos -= cameraSpeed * cameraFront;
+                if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) nextPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+                if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) nextPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
+                // --- Task 2: Puvodni kolize s hranicemi mapy ---
+                if (nextPos.x < mapBounds.min.x || nextPos.x > mapBounds.max.x) nextPos.x = cameraPos.x;
+                if (nextPos.z < mapBounds.min.z || nextPos.z > mapBounds.max.z) nextPos.z = cameraPos.z;
+
+                // --- Task 2: Pokrocila kolize s libovolnymi modely ---
+                bool hitModel = false;
+                float playerRadius = 0.2f;
+
+                std::vector<glm::mat4> sceneModels;
+
+                // Pridani hlavniho rotujiciho modelu
+                glm::mat4 mainModelMatrix = glm::mat4(1.0f);
+                mainModelMatrix = glm::rotate(mainModelMatrix, timeValue * 0.5f, glm::vec3(0.0f, 1.0f, 0.0f));
+                sceneModels.push_back(mainModelMatrix);
+
+                // Pridani pruhlednych modelu do seznamu kolizi
+                for (int i = 0; i < 3; i++) {
+                    glm::mat4 transModel = glm::mat4(1.0f);
+                    transModel = glm::translate(transModel, glm::vec3(3.0f, 0.0f, -2.0f - (i * 2.0f)));
+                    sceneModels.push_back(transModel);
+                }
+
+                // Detekce kolize prevedenim do lokalniho prostoru modelu
+                for (const auto& modelMatrix : sceneModels) {
+                    glm::vec3 localNextPos = glm::vec3(glm::inverse(modelMatrix) * glm::vec4(nextPos, 1.0f));
+
+                    if (localNextPos.x >= modelLocalAABB.min.x - playerRadius && localNextPos.x <= modelLocalAABB.max.x + playerRadius &&
+                        localNextPos.y >= modelLocalAABB.min.y - playerRadius && localNextPos.y <= modelLocalAABB.max.y + playerRadius &&
+                        localNextPos.z >= modelLocalAABB.min.z - playerRadius && localNextPos.z <= modelLocalAABB.max.z + playerRadius) {
+
+                        hitModel = true;
+                        break;
+                    }
+                }
+
+                if (hitModel) {
+                    nextPos = cameraPos;
+
+                    // --- Task 3: Spawnovani jisker pri narazu ---
+                    if (particles.size() < 50) {
+                        for (int p = 0; p < 3; p++) {
+                            particles.push_back({
+                                cameraPos + cameraFront * 0.3f,
+                                glm::vec3(((rand() % 100) / 50.f) - 1.f,
+                                          ((rand() % 100) / 50.f) - 1.f,
+                                          ((rand() % 100) / 50.f) - 1.f) * 2.0f,
+                                0.3f + ((rand() % 100) / 200.f)
+                                });
+                        }
+                    }
+                }
+
+                cameraPos = nextPos;
             }
 
+            // ==========================================
+            // IMGUI A CLEAR BUFFER
+            // ==========================================
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
@@ -337,52 +392,37 @@ int App::run(void) {
             ImGui::Text("Cursor Captured: %s (Press TAB)", isCursorCaptured ? "YES" : "NO");
             ImGui::Text("Camera Pos: (%.2f, %.2f, %.2f)", cameraPos.x, cameraPos.y, cameraPos.z);
             ImGui::ColorEdit3("Background Color", bgColor);
-            if (ImGui::Button("Take Screenshot (Press P)")) {
-                // Feature handled in key_callback
-            }
             ImGui::End();
 
             glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            float timeValue = (float)glfwGetTime();
-
             shader->use();
 
-            // Setup Material
+            // Nastaveni materialu a ViewPos
             if (myTexture) {
                 myTexture->bind();
                 shader->setUniform("material.diffuse", 0);
             }
             shader->setUniform("material.shininess", 32.0f);
-
-            // Pass Camera Position for specular lighting
             shader->setUniform("viewPos", cameraPos);
 
-            // ==========================================
-            // TASK 1: Directional Light (Sun)
-            // ==========================================
-            // Make the sun rotate over time
+            // Svetla
             glm::vec3 sunDir = glm::vec3(sin(timeValue), -1.0f, cos(timeValue));
             shader->setUniform("dirLight.direction", sunDir);
             shader->setUniform("dirLight.ambient", glm::vec3(0.05f));
             shader->setUniform("dirLight.diffuse", glm::vec3(0.4f));
             shader->setUniform("dirLight.specular", glm::vec3(0.5f));
 
-            // ==========================================
-            // TASK 2: 3 Point Lights
-            // ==========================================
-            // Define positions (orbiting around the center)
             std::vector<glm::vec3> pointLightPositions = {
-                glm::vec3(2.0f * sin(timeValue),  0.2f,  2.0f * cos(timeValue)), // Moving
-                glm::vec3(2.3f, -1.3f, -2.0f),                                   // Static
-                glm::vec3(-2.0f,  2.0f, -3.0f)                                    // Static
+                glm::vec3(2.0f * sin(timeValue),  0.2f,  2.0f * cos(timeValue)),
+                glm::vec3(2.3f, -1.3f, -2.0f),
+                glm::vec3(-2.0f,  2.0f, -3.0f)
             };
-            // Define colors for visual distinction
             std::vector<glm::vec3> pointLightColors = {
-                glm::vec3(1.0f, 0.0f, 0.0f), // Red
-                glm::vec3(0.0f, 1.0f, 0.0f), // Green
-                glm::vec3(0.0f, 0.0f, 1.0f)  // Blue
+                glm::vec3(1.0f, 0.0f, 0.0f),
+                glm::vec3(0.0f, 1.0f, 0.0f),
+                glm::vec3(0.0f, 0.0f, 1.0f)
             };
 
             for (int i = 0; i < 3; i++) {
@@ -391,15 +431,11 @@ int App::run(void) {
                 shader->setUniform(prefix + "ambient", pointLightColors[i] * 0.05f);
                 shader->setUniform(prefix + "diffuse", pointLightColors[i] * 0.8f);
                 shader->setUniform(prefix + "specular", pointLightColors[i] * 1.0f);
-                // Attenuation params for distance ~50
                 shader->setUniform(prefix + "constant", 1.0f);
                 shader->setUniform(prefix + "linear", 0.09f);
                 shader->setUniform(prefix + "quadratic", 0.032f);
             }
 
-            // ==========================================
-            // TASK 3: Spot Light (Headlight)
-            // ==========================================
             shader->setUniform("spotLight.position", cameraPos);
             shader->setUniform("spotLight.direction", cameraFront);
             shader->setUniform("spotLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -408,23 +444,63 @@ int App::run(void) {
             shader->setUniform("spotLight.constant", 1.0f);
             shader->setUniform("spotLight.linear", 0.09f);
             shader->setUniform("spotLight.quadratic", 0.032f);
-            // Cutoff angles (Using cosine because dot product returns cosine of the angle)
             shader->setUniform("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
             shader->setUniform("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
 
-            // ==========================================
-            // Standard Transformations
-            // ==========================================
-            glm::mat4 model = glm::mat4(1.0f);
-            // Optional: Rotate the model so you can see the lighting react
-            model = glm::rotate(model, timeValue * 0.5f, glm::vec3(0.0f, 1.0f, 0.0f));
             glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-
-            shader->setUniform("model", model);
             shader->setUniform("view", view);
             shader->setUniform("projection", projection);
 
+
+            // ==========================================
+            // KRESLENI SCENY - SPRAVNE PORADI
+            // ==========================================
+
+            // 1. VYKRESLENÍ HLAVNÍCH NEPRŮHLEDNÝCH MODELŮ
+            shader->setUniform("objectAlpha", 1.0f); // Plna viditelnost
+
+            glm::mat4 mainModel = glm::mat4(1.0f);
+            mainModel = glm::rotate(mainModel, timeValue * 0.5f, glm::vec3(0.0f, 1.0f, 0.0f));
+            shader->setUniform("model", mainModel);
             myModel->draw();
+
+
+            // 2. UPDATE A VYKRESLENÍ ČÁSTIC (Task 3)
+            for (auto& p : particles) {
+                p.life -= deltaTime;
+                p.position += p.velocity * deltaTime;
+            }
+
+            particles.erase(std::remove_if(particles.begin(), particles.end(),
+                [](const Particle& p) { return p.life <= 0.0f; }), particles.end());
+
+            if (!particles.empty()) {
+                std::vector<Vertex> pVerts;
+                for (const auto& p : particles) {
+                    pVerts.push_back({ p.position, glm::vec3(0), glm::vec2(0) });
+                }
+
+                Mesh particleMesh(pVerts, GL_POINTS);
+                shader->setUniform("model", glm::mat4(1.0f));
+                glPointSize(8.0f);
+                particleMesh.draw();
+            }
+
+
+            // 3. VYKRESLENÍ PRŮHLEDNÝCH MODELŮ (Task 1)
+            glDepthMask(GL_FALSE); // Vypneme zapis do Z-bufferu
+            shader->setUniform("objectAlpha", 0.4f); // 40% neprůhlednost
+
+            for (int i = 0; i < 3; i++) {
+                glm::mat4 transModel = glm::mat4(1.0f);
+                transModel = glm::translate(transModel, glm::vec3(3.0f, 0.0f, -2.0f - (i * 2.0f)));
+                shader->setUniform("model", transModel);
+                myModel->draw();
+            }
+
+            glDepthMask(GL_TRUE); // Znovu zapneme pro dalsi snimek
+
+            // ==========================================
 
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
