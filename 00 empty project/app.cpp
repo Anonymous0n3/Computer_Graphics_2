@@ -265,6 +265,7 @@ bool App::init() {
 
         if (loadOBJ("bunny.obj", loaded_vertices, loaded_indices)) {
             myModel = std::make_unique<Mesh>(loaded_vertices, loaded_indices, GL_TRIANGLES);
+            std::cout << "zajic nacten";
         }
         else {
             throw std::runtime_error("CRITICAL ERROR: Could not find or load model! Check your file path.");
